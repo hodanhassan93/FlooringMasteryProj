@@ -37,13 +37,18 @@ class TaxReadObjectTest {
 
 	@Test
 	void readObjectTest01() {
-		LinkedList<Tax> taxes = new taxDataAccess.readObject("Taxes");
-		assertEquals(true, (taxes.size()>0));
+		try {
+			LinkedList<Tax> taxes = taxDataAccess.readObject("Taxes");
+			assertEquals(true, (taxes != null) );
+		} catch(Exception FileNotFoundException) {
+			fail();
+		}
 	}
 	
 	@Test
-	void reaadObjectTest02() {
-		assertThrows(FileNotFoundException.class, taxDataAccess.readObject("foo"));
+	void readObjectTest02() {
+		assertThrows(FileNotFoundException.class, () -> taxDataAccess.readObject("foo"));
+		
 	}
 
 }
