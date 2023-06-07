@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class Order {
 	
-	public class Order {
+	
 		
 		private int orderNumber;
 		private String customerName;
@@ -118,6 +118,6 @@ public class Order {
 		
 		
 		
-	}
+	
 
 }
