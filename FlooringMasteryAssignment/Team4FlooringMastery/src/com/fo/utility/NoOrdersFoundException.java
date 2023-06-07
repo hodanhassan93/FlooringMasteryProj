@@ -1,5 +1,13 @@
 package com.fo.utility;
 
-public class NoOrdersFoundException {
+public class NoOrdersFoundException extends Exception {
+	
+	
+public NoOrdersFoundException(String message) {
+		
+		super(message);
+	}
 
 }
+
+
