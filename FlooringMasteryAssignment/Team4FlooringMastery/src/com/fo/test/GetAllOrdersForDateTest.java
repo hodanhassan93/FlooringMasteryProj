@@ -1,6 +1,8 @@
 package com.fo.test;
-
+import com.fo.dto.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.LinkedList;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -29,6 +31,17 @@ class GetAllOrdersForDateTest {
 	@Test
 	void test() {
 		fail("Not yet implemented");
+	}
+	
+	@Test
+	static LinkedList<Order> GetAllOrdersForDateTest(){
+	
+		LinkedList<Order> orders = new LinkedList<Order>();
+		
+		return orders;
+		
+		
+		
 	}
 
 }
