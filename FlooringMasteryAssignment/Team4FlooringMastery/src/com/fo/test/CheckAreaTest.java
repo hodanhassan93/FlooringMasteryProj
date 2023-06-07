@@ -13,14 +13,6 @@ import com.fo.utility.InvalidInputException;
 class CheckAreaTest {
 	FoBusinessLogicImpl service;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
 	@BeforeEach
 	void setUp() throws Exception {
 		service = new FoBusinessLogicImpl();

@@ -18,14 +18,6 @@ import com.fo.service.FoBusinessLogicImpl;
 class CreateOrderTest {
 	FoBusinessLogicImpl service;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
 	@BeforeEach
 	void setUp() throws Exception {
 		service = new FoBusinessLogicImpl();

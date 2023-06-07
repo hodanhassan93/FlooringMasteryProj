@@ -18,14 +18,6 @@ class EditOrderTest {
 	FoBusinessLogicImpl service;
 	LinkedList<Order> orders;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
 	@BeforeEach
 	void setUp() throws Exception {
 		service = new FoBusinessLogicImpl();

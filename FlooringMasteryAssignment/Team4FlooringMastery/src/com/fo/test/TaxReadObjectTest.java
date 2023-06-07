@@ -17,14 +17,6 @@ class TaxReadObjectTest {
 	
 	FoTaxDataAccessImpl taxDataAccess;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception { 
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
 	@BeforeEach
 	void setUp() throws Exception {
 		taxDataAccess = new FoTaxDataAccessImpl();
