@@ -4,31 +4,40 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.fo.service.*;
+import com.fo.utility.InvalidInputException;
 
 class CheckNameTest {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+	@Test
+	public void checkNameTest01() {
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
+		boolean result = businessLogic.checkName("John, Doe");
 
-	@AfterEach
-	void tearDown() throws Exception {
+		Assertions.assertTrue(result);
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	public void checkNameTest02() {
+
+		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
+
+		Assertions.assertThrows(InvalidInputException.class, () -> businessLogic.checkName("John@Doe"));
 	}
 
+	@Test
+	public void checkNameTest03() {
+
+		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
+
+		boolean result = businessLogic.checkName("");
+
+		Assertions.assertFalse(result);
+	}
 }
