@@ -1,5 +1,5 @@
 package com.fo.service;
 
-public class FoBusinessLogicImpl {
+public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 }

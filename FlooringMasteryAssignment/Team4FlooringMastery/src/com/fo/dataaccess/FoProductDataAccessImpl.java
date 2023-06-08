@@ -1,5 +1,5 @@
 package com.fo.dataaccess;
 
-public class FoProductDataAccessImpl {
+public class FoProductDataAccessImpl implements FoDataAccess {
 
 }
