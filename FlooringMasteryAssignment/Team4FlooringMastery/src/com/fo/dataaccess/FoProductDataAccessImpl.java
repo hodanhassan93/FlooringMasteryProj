@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class FoProductDataAccessImpl implements FoDataAccess {
 	
-    public static LinkedList<Product> readObject(String filename) throws Exception {
+public static LinkedList<Product> readObject(String filename) throws Exception {
         LinkedList<Product> products = new LinkedList<>();
 
         try {
@@ -23,6 +23,12 @@ public class FoProductDataAccessImpl implements FoDataAccess {
             while (scanner.hasNext()) {
                 String currentLine = scanner.nextLine();
                 String[] values = currentLine.split(",");
+
+	@Override
+	public void writeOrdersToAFile(LinkedList<Order> orders) {
+		// TODO Auto-generated method stub
+		
+	}
 
                 Product product = new Product();
                 product.setProductType(values[0]);

@@ -27,5 +27,7 @@ public class Tax {
 		public void setTaxRate(BigDecimal taxRate) {
 			this.taxRate = taxRate;
 		}
+		
+}	
 
-}
+

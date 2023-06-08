@@ -3,6 +3,7 @@ package com.fo.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+
 public class Order {
 	private LocalDate orderDate;
 	private int orderNumber;
@@ -93,6 +94,6 @@ public class Order {
 				+ ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + "]";
 	}
 		
-	
-
 }
+
+
