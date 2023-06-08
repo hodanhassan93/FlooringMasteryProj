@@ -44,8 +44,6 @@ public class Order {
 		this.customerName = customerName;
 	}
 
-	
-
 	public BigDecimal getArea() {
 		return area;
 	}
@@ -142,9 +140,6 @@ public class Order {
 				+ costPerSquareFoot + ", laborCostperSquareFoot=" + laborCostperSquareFoot + ", materialCost="
 				+ materialCost + ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + "]";
 	}
-
-	
-		
 }
 
 
