@@ -31,7 +31,7 @@ public class FoOrderDataAccessImpl implements FoDataAccess{
 		
 		for(Order order:orders) {
 			String ordStr=order.getOrderNumber()+","+order.getCustomerName()+","+order.getState()+","+order.getTaxRate()+","+order.getProductType()
-			+","+order.getArea()+","+order.getCostPerSquareFoot()+","+order.getLaborPerSquareFoot()+","+order.getMaterialCost()+","+order.getLaborCost()+","+order.getTax()+","+order.getTotal();
+			+","+order.getArea()+","+order.getCostPerSquareFoot()+","+order.getLaborCostperSquareFoot()+","+order.getMaterialCost()+","+order.getLaborCost()+","+order.getTax()+","+order.getTotal();
 			
 			printWriter.println(ordStr);
 		}

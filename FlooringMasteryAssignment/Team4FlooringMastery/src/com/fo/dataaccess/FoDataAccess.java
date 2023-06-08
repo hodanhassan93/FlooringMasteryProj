@@ -7,5 +7,10 @@ import com.fo.dto.*;
 
 public interface FoDataAccess {
 
-	public <E> LinkedList<E> readObject(String fileName) throws Exception;
+	
+
+	LinkedList<Order> readOrders(String FileName) throws Exception;
+
+	boolean writeObject(LinkedList<Order> orders, String FileName) throws FileNotFoundException;
 }
+
