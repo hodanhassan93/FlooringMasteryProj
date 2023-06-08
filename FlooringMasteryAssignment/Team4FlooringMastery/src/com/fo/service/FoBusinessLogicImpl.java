@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public class FoBusinessLogicImpl {
 
 
-
 	public boolean checkName(String string) {
 		// TODO Auto-generated method stub
 		return false;
