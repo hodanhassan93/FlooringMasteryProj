@@ -14,7 +14,7 @@ import com.fo.dataaccess.FoTaxDataAccessImpl;
 import com.fo.dto.Tax;
 
 class TaxReadObjectTest {
-	
+
 	FoTaxDataAccessImpl taxDataAccess;
 
 	@BeforeEach
@@ -30,17 +30,17 @@ class TaxReadObjectTest {
 	@Test
 	void readObjectTest01() {
 		try {
-			LinkedList<Tax> taxes = taxDataAccess.readObject("Taxes");
-			assertEquals(true, (taxes != null) );
-		} catch(Exception FileNotFoundException) {
+			LinkedList<Tax> taxes = taxDataAccess.readObject("Taxes.txt");
+			assertEquals(true, (taxes != null));
+		} catch (Exception FileNotFoundException) {
 			fail();
 		}
 	}
-	
+
 	@Test
 	void readObjectTest02() {
 		assertThrows(FileNotFoundException.class, () -> taxDataAccess.readObject("foo"));
-		
+
 	}
 
 }

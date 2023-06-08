@@ -9,46 +9,39 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class FoProductDataAccessImpl implements FoDataAccess {
-	
-public static LinkedList<Product> readObject(String filename) throws Exception {
-        LinkedList<Product> products = new LinkedList<>();
-
-        try {
-            FileReader fileReader = new FileReader(filename);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            Scanner scanner = new Scanner(bufferedReader);
-
-            scanner.nextLine();
-
-            while (scanner.hasNext()) {
-                String currentLine = scanner.nextLine();
-                String[] values = currentLine.split(",");
 
 	@Override
-	public void writeOrdersToAFile(LinkedList<Order> orders) {
-		// TODO Auto-generated method stub
-		
+	public LinkedList<Product> readObject(String filename) throws Exception {
+		LinkedList<Product> products = new LinkedList<>();
+
+		try {
+			FileReader fileReader = new FileReader(filename);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			Scanner scanner = new Scanner(bufferedReader);
+
+			scanner.nextLine();
+
+			while (scanner.hasNext()) {
+				String currentLine = scanner.nextLine();
+				String[] values = currentLine.split(",");
+
+				Product value = new Product(values[0], new BigDecimal(values[1]), new BigDecimal(values[2]));
+				
+				products.add(value);
+			}
+
+			try {
+				fileReader.close();
+				bufferedReader.close();
+				scanner.close();
+			} catch (Exception ex) {
+			}
+
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException("File not found: " + filename);
+		}
+
+		return products;
 	}
 
-                Product product = new Product();
-                product.setProductType(values[0]);
-                product.setCostPerSquareFoot(new BigDecimal(String.valueOf(values[1])));
-                product.setLaborCostPerSquareFoot(new BigDecimal(String.valueOf(values[2])));
-
-                products.add(product);
-            }
-
-            fileReader.close();
-            bufferedReader.close();
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("File not found: " + filename);
-        }
-
-        return products;
-    }
-  
-  public void writeOrdersToAFile(LinkedList<Order> orders){
-  }
 }
-
-
