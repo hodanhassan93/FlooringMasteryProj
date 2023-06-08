@@ -1,8 +1,8 @@
 package com.fo.dataaccess;
+
 import java.util.LinkedList;
 import java.io.FileReader;
 import java.math.BigDecimal;
-
 import com.fo.dto.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,8 +10,7 @@ import java.util.Scanner;
 
 public class FoProductDataAccessImpl implements FoDataAccess {
 	
-
-    public static LinkedList<Product> readRecords(String filename) throws Exception {
+    public static LinkedList<Product> readObject(String filename) throws Exception {
         LinkedList<Product> products = new LinkedList<>();
 
         try {
@@ -41,6 +40,9 @@ public class FoProductDataAccessImpl implements FoDataAccess {
 
         return products;
     }
+  
+  public void writeOrdersToAFile(LinkedList<Order> orders){
+  }
 }
 
 
