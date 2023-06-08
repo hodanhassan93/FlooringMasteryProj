@@ -3,21 +3,25 @@ package com.fo.dto;
 import java.math.BigDecimal;
 
 public class Tax {
-	
-	
-		
-		private String stateAbbreviation;
-		
+		private String stateAbbreviation;	
 		private String stateName;
 		private BigDecimal taxRate;
-		
-		
+
+		public Tax(String stateAbbreviation, String stateName, BigDecimal taxRate) {
+			super();
+			this.stateAbbreviation = stateAbbreviation;
+			this.stateName = stateName;
+			this.taxRate = taxRate;
+		}
+
 		public String getStateAbbreviation() {
 			return stateAbbreviation;
 		}
+		
 		public void setStateAbbreviation(String stateAbbreviation) {
 			this.stateAbbreviation = stateAbbreviation;
 		}
+		
 		public String getStateName() {
 			return stateName;
 		}
@@ -30,10 +34,7 @@ public class Tax {
 		public void setTaxRate(BigDecimal taxRate) {
 			this.taxRate = taxRate;
 		}
-
 		
-		
-	
+}	
 
 
-}
