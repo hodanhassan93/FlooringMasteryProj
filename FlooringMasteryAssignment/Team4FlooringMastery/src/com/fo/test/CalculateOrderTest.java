@@ -26,9 +26,19 @@ class CalculateOrderTest {
 	void tearDown() throws Exception {
 	}
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
+	@Test // CalculateOrder01
+	void CalculateOrder() {
+		BigDecimal taxRate = 6.00;
+		BigDecimal area = 217.00;
+		BigDecimal costPerSquareFoot = 2.25;
+		BigDecimal laborCostPerSquareFoot = 2.10;
 
+		Order order = calculateOrder(taxRate, area, costPerSquareFoot, laborCostPerSquareFoot);
+
+		FoBusinessLogicImpl fobusinessLogicImpl = new FoBusinessLogicImpl();
+
+		BigDecimal expectedResult = new BigDecimal("1000.59");
+		
+		assertTrue(expectedResult == order.getTotal);
+	}
 }

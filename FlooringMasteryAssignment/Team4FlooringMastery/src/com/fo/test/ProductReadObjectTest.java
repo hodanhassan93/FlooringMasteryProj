@@ -52,9 +52,11 @@ class ProductReadObjectTest {
 
         try {
             productList = FoProductDataAccessImpl.readRecords("NonexistentFile.txt");
-        } catch (FileNotFoundException e) {
-            exceptionThrown = true;
+        } catch (Exception e) {
             e.printStackTrace();
+            
+            if(e instanceof FileNotFoundException)
+            	exceptionThrown = true;
         }
 
         Assertions.assertTrue(exceptionThrown, "Expected FileNotFoundException was not thrown.");
