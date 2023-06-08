@@ -1,123 +1,98 @@
 package com.fo.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 public class Order {
+	private LocalDate orderDate;
+	private int orderNumber;
+	private String customerName;
+	private Tax taxInfo;
+	private Product product;
+	private BigDecimal area;
+	private BigDecimal materialCost;
+	private BigDecimal laborCost;
+	private BigDecimal tax;
+	private BigDecimal total;
 	
-	
-		
-		private int orderNumber;
-		private String customerName;
-		private String state;
-		private BigDecimal taxRate;
-		private String productType;
-		private BigDecimal area;
-		private BigDecimal costBySquareFoot;
-		private BigDecimal laborCostPerSquareFoot;
-		private BigDecimal materialcost;
-		private BigDecimal laborCost;
-		private BigDecimal tax;
-		private BigDecimal total;
-		
-		
-		
-		
-		
-		public Order(int orderNumber, String customerName, String state, BigDecimal taxRate, String productType,
-				BigDecimal area, BigDecimal costBySquareFoot, BigDecimal laborCostPerSquareFoot, BigDecimal materialcost,
-				BigDecimal laborCost, BigDecimal tax, BigDecimal total) {
-			super();
-			this.orderNumber = orderNumber;
-			this.customerName = customerName;
-			this.state = state;
-			this.taxRate = taxRate;
-			this.productType = productType;
-			this.area = area;
-			this.costBySquareFoot = costBySquareFoot;
-			this.laborCostPerSquareFoot = laborCostPerSquareFoot;
-			this.materialcost = materialcost;
-			this.laborCost = laborCost;
-			this.tax = tax;
-			this.total = total;
-		}
-		
-		public int getOrderNumber() {
-			return orderNumber;
-		}
-		public void setOrderNumber(int orderNumber) {
-			this.orderNumber = orderNumber;
-		}
-		public String getCustomerName() {
-			return customerName;
-		}
-		public void setCustomerName(String customerName) {
-			this.customerName = customerName;
-		}
-		public String getState() {
-			return state;
-		}
-		public void setState(String state) {
-			this.state = state;
-		}
-		
-		
-		public BigDecimal getTaxRate() {
-			return taxRate;
-		}
-		public void setTaxRate(BigDecimal taxRate) {
-			this.taxRate = taxRate;
-		}
-		public String getProductType() {
-			return productType;
-		}
-		public void setProductType(String productType) {
-			this.productType = productType;
-		}
-		public BigDecimal getArea() {
-			return area;
-		}
-		public void setArea(BigDecimal area) {
-			this.area = area;
-		}
-		public BigDecimal getCostBySquareFoot() {
-			return costBySquareFoot;
-		}
-		public void setCostBySquareFoot(BigDecimal costBySquareFoot) {
-			this.costBySquareFoot = costBySquareFoot;
-		}
-		public BigDecimal getLaborCostPerSquareFoot() {
-			return laborCostPerSquareFoot;
-		}
-		public void setLaborCostPerSquareFoot(BigDecimal laborCostPerSquareFoot) {
-			this.laborCostPerSquareFoot = laborCostPerSquareFoot;
-		}
-		public BigDecimal getMaterialcost() {
-			return materialcost;
-		}
-		public void setMaterialcost(BigDecimal materialcost) {
-			this.materialcost = materialcost;
-		}
-		public BigDecimal getLaborCost() {
-			return laborCost;
-		}
-		public void setLaborCost(BigDecimal laborCost) {
-			this.laborCost = laborCost;
-		}
-		public BigDecimal getTax() {
-			return tax;
-		}
-		public void setTax(BigDecimal tax) {
-			this.tax = tax;
-		}
-		public BigDecimal getTotal() {
-			return total;
-		}
-		public void setTotal(BigDecimal total) {
-			this.total = total;
-		}
-		
-		
+	public Order(LocalDate orderDate, int orderNumber, String customerName, Tax taxInfo, Product product,
+			BigDecimal area, BigDecimal materialCost, BigDecimal laborCost, BigDecimal tax, BigDecimal total) {
+		super();
+		this.orderDate = orderDate;
+		this.orderNumber = orderNumber;
+		this.customerName = customerName;
+		this.taxInfo = taxInfo;
+		this.product = product;
+		this.area = area;
+		this.materialCost = materialCost;
+		this.laborCost = laborCost;
+		this.tax = tax;
+		this.total = total;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public Tax getTaxInfo() {
+		return taxInfo;
+	}
+
+	public void setTaxInfo(Tax taxInfo) {
+		this.taxInfo = taxInfo;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public BigDecimal getArea() {
+		return area;
+	}
+
+	public void setArea(BigDecimal area) {
+		this.area = area;
+	}
+
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	public int getOrderNumber() {
+		return orderNumber;
+	}
+
+	public BigDecimal getMaterialCost() {
+		return materialCost;
+	}
+
+	public BigDecimal getLaborCost() {
+		return laborCost;
+	}
+
+	public BigDecimal getTax() {
+		return tax;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [orderDate=" + orderDate + ", orderNumber=" + orderNumber + ", customerName=" + customerName
+				+ ", taxInfo=" + taxInfo + ", product=" + product + ", area=" + area + ", materialCost=" + materialCost
+				+ ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + "]";
+	}
 		
 }
 

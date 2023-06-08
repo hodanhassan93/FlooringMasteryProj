@@ -1,5 +1,17 @@
 package com.fo.service;
 
-public class FoBusinessLogicImpl implements FoBusinessLogic {
+import java.time.LocalDate;
+
+public class FoBusinessLogicImpl {
+
+	public boolean checkName(String string) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean checkDate(String futureDateString) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
