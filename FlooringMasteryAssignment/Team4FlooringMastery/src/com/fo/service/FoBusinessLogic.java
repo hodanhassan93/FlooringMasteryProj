@@ -8,9 +8,11 @@ import com.fo.utility.InvalidDateException;
 import com.fo.utility.InvalidInputException;
 import com.fo.utility.NoOrdersFoundException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public interface FoBusinessLogic {
@@ -26,8 +28,10 @@ public interface FoBusinessLogic {
 	public Order getOrder(String fileName,int orderNumber) throws Exception;
 	public LinkedList<Order> editOrder(int orderNumber, Order order);
 	public void removeOrder(Order order) throws NoOrdersFoundException;
-	public void saveOrdersToAFile();
 	public void exportData();
+	public HashMap<LocalDate, Order> placeOrder(LocalDate date,Order order);
+	public File saveOrdersToAFile(HashMap<LocalDate, Order> orderlist);
+	public HashMap<LocalDate, Order> getUnsavedOrders();
 	
 //	public LinkedList<Product> getProducts();
 //	public LinkedList<Tax> getStates();

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import com.fo.presentation.FoUserInterface;
 import com.fo.presentation.FoUserInterfaceImpl;
+import com.fo.utility.NoOrdersFoundException;
 
 public class FlooringOrders {
 
@@ -15,7 +16,12 @@ public class FlooringOrders {
 			foUserInterface.showMenu();
 			System.out.println("What would you like to do:");
 			String choice = scanner.nextLine();
-			foUserInterface.performMenu(choice);
+			try {
+				foUserInterface.performMenu(choice);
+			} catch (NoOrdersFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

@@ -9,9 +9,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.IntStream;
-
+import java.util.HashMap;
 import com.fo.dataaccess.*;
 import com.fo.dto.Order;
 import com.fo.dto.Product;
@@ -34,7 +36,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	private FoUserInterfaceImpl ui;
 	private LinkedList<Product> products;
 	private LinkedList<Tax> taxes;
-	private LinkedList<Order> temporaryOrderStorage;
+	private HashMap<LocalDate,Order> temporaryOrderStorage = new HashMap<LocalDate,Order>();
 	private LinkedList<Order> orders;
 	private LocalDate orderDate;
 
@@ -64,8 +66,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		
 		System.out.println(fileName);
 
-		File f = new File(fileName);
-
+		
 		try {
 			this.orders = dataAccess.readObjects(fileName);
 			return this.orders;
@@ -93,7 +94,18 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		
 		return calculateOrder(orderDate, getHighestOrderNumber(), customerName, tax, product, area);
 
+		
 //		 CODE ENDS - Don't delete
+	}
+	
+	
+	public HashMap<LocalDate, Order> getUnsavedOrders(HashMap<LocalDate, Order> temp) {
+		
+		temp.putAll(temporaryOrderStorage);
+		
+		return temporaryOrderStorage;
+		
+		
 	}
 
 	@Override
@@ -178,9 +190,10 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	// Ju
-	private void placeOrder(Order order) {
+	public HashMap<LocalDate,Order> placeOrder(LocalDate date, Order order) {
 		// Add the data to in-memory storage
-		temporaryOrderStorage.add(order);
+		temporaryOrderStorage.put(date,order);
+		return temporaryOrderStorage;
 	}
 
 	@Override
@@ -283,19 +296,34 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public void saveOrdersToAFile() {
-
-		String fileName= "Orders_" + orderDate.format(DateTimeFormatter.ofPattern("MMDDYYYY")) + ".txt";
+	public File saveOrdersToAFile(HashMap<LocalDate,Order> orderlist) {
+		
+		Entry<LocalDate, Order> entry = orderlist.entrySet().iterator().next();
+		 LocalDate key = entry.getKey();
+//		
+		
+		
+			
+		String fileName= "Orders_" + key.format(DateTimeFormatter.ofPattern("MMDDYYYY")) + ".txt";
 		try {
+			
+			File f = new File(fileName);
+			f.createNewFile();
 			dataAccess.writeObject(orders,fileName);
+			return f;
+			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 		}
-
+		return null;
+		
+		}
 		// CODE ENDS - Don't delete
 
-	}
+	
+
+
 
 	@Override
 	public void exportData() {
@@ -307,6 +335,16 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	private int getHighestOrderNumber() {
 		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
 		return foTrackerDataAccess.readOrderNumberTracker();
+	}
+
+	@Override
+	public HashMap<LocalDate, Order> getUnsavedOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+		
 	}
 
 	/*
@@ -331,4 +369,4 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	 * ============
 	 */
 
-}
+
