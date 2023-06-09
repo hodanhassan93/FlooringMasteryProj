@@ -44,4 +44,16 @@ public class FoProductDataAccessImpl implements FoDataAccess {
 		return products;
 	}
 
+	@Override
+	public LinkedList<Order> readOrders(String FileName) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean writeObject(LinkedList<Order> orders, String FileName) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

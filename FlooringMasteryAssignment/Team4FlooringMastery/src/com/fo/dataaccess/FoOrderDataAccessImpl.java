@@ -2,6 +2,8 @@ package com.fo.dataaccess;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import com.fo.dto.Order;
+import com.fo.dto.Product;
+
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
@@ -76,6 +78,14 @@ public class FoOrderDataAccessImpl implements FoDataAccess{
 		bufferedReader.close();
 		
 		return orders;
+	}
+
+
+
+	@Override
+	public LinkedList<Product> readObject(String filename) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
