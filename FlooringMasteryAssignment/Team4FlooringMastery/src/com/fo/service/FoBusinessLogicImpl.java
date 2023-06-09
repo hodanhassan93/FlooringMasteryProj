@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	private LinkedList<Product> products;
 	private LinkedList<Tax> taxes;
 	private LinkedList<Order> temporaryOrderStorage;
-	private static LinkedList<Order> orders;
+	private LinkedList<Order> orders;
 	private LocalDate orderDate;
 
 	public FoBusinessLogicImpl() {
@@ -57,9 +58,11 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException {
+	public LinkedList<Order> getAllOrdersForDate(String date) throws FileNotFoundException {
 
-		String fileName = "Order_" + date + ".txt";
+		String fileName = "Orders_" + date + ".txt";
+		
+		System.out.println(fileName);
 
 		File f = new File(fileName);
 
@@ -100,7 +103,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
             return false;
         }
 
-        if (!name.matches("[a-zA-Z\\s]+")) {
+        if (!name.matches("[a-zA-Z\\s,]+")) {
             throw new InvalidInputException("Invalid characters in name: " + name);
         }
 
@@ -200,13 +203,13 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	@Override
 	public boolean checkProductType(String productType) throws EntryNotFoundException {
-		LinkedList<Order> matches = new LinkedList<Order>();
+		LinkedList<Product> matches = new LinkedList<Product>();
 
-		for (Order order : orders) {
+		for (Product product : products) {
 
-			if (productType.toLowerCase().contains(order.getProductType().toLowerCase())) {
+			if (productType.toLowerCase().contains(product.getProductType().toLowerCase())) {
 
-				matches.add(order);
+				matches.add(product);
 
 			}
 
@@ -215,23 +218,29 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 				throw new EntryNotFoundException("No product with the inserted type exists");
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override
-	public Order getOrder(int orderNumber) throws Exception{
-		LinkedList<Order> matches = new LinkedList<Order>();
-
+	public Order getOrder(String fileName, int orderNumber) throws Exception{
+	
+		
+	 this.orders = dataAccess.readObjects(fileName);
+			
+			
+		
+		
 		for (Order order : orders) {
 
 			if (order.getOrderNumber() == orderNumber) {
 
-				matches.add(order);
+				return order;
 
-			} else if (matches.size() == 0) {
-				throw new EntryNotFoundException("No product with the inserted type exists");
+			} else {
+				return null;
 			}
 		}
+		
 		return null;
 	}
 
@@ -275,7 +284,14 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	@Override
 	public void saveOrdersToAFile() {
-		// CODE STARTS - Don't delete
+
+		String fileName= "Orders_" + orderDate.format(DateTimeFormatter.ofPattern("MMDDYYYY")) + ".txt";
+		try {
+			dataAccess.writeObject(orders,fileName);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 
 		// CODE ENDS - Don't delete
 

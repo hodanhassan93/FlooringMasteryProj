@@ -1,6 +1,6 @@
 package com.fo.test;
 
-import static org.junit.Assert.assertTrue;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
@@ -11,9 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
+
 import com.fo.dto.*;
 import com.fo.dataaccess.*;
 import com.fo.dto.Order;
@@ -90,7 +88,7 @@ class CheckProductTypeTest {
 		
 	    
 		
-		LinkedList<Product> productsList = dao.readObject("Products");
+		LinkedList<Product> productsList = dao.readObjects("Products.txt");
 		
 		for(Product product:productsList) {
 			

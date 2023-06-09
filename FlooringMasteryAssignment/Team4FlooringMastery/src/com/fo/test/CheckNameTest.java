@@ -18,7 +18,12 @@ class CheckNameTest {
 
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 
-		boolean result = businessLogic.checkName("John, Doe");
+		boolean result=false;
+		try {
+			result = businessLogic.checkName("John, Doe");
+		} catch (InvalidInputException e) {
+			fail();
+		}
 
 		Assertions.assertTrue(result);
 	}
@@ -36,7 +41,12 @@ class CheckNameTest {
 
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 
-		boolean result = businessLogic.checkName("");
+		boolean result=false;
+		try {
+			result = businessLogic.checkName("");
+		} catch (InvalidInputException e) {
+			fail();
+		}
 
 		Assertions.assertFalse(result);
 	}
