@@ -9,7 +9,7 @@ import com.fo.utility.InvalidDateException;
 import com.fo.utility.InvalidInputException;
 
 public class FoUserInterfaceImpl implements FoUserInterface {
-	private FoBusinessLogic foBusinessLogic = new FoBusinessLogicImpl();
+	private FoBusinessLogic foBusinessLogic;
 
 	@Override
 	public void showMenu() {
@@ -24,8 +24,8 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 	@Override
 	public void performMenu(String choice) {
+		foBusinessLogic = new FoBusinessLogicImpl();
 		Scanner scanner = new Scanner(System.in);
-
 		switch (choice) {
 
 		// 1 - DISPLAY ORDERS
