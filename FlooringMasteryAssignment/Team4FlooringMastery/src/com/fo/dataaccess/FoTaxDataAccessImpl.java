@@ -12,7 +12,7 @@ import com.fo.dto.*;
 public class FoTaxDataAccessImpl implements FoDataAccess {
 
 	@Override
-	public LinkedList<Tax> readObject(String fileName) throws Exception {
+	public LinkedList<Tax> readObjects(String fileName) throws Exception {
 		try {
 			LinkedList<Tax> items = new LinkedList<Tax>();
 

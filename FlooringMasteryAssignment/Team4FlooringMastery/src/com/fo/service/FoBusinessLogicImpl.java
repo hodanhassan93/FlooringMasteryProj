@@ -6,22 +6,116 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.sujata.employee.dto.Employee;
-import com.sujata.employee.exception.EmployeeIdNotFoundException;
+
+import com.fo.dataaccess.FoDataAccess;
+import com.fo.dataaccess.FoOrderDataAccessImpl;
+import com.fo.dataaccess.FoProductDataAccessImpl;
+import com.fo.dataaccess.FoTaxDataAccessImpl;
+import com.fo.dto.Order;
+import com.fo.dto.Product;
+import com.fo.dto.Tax;
+import com.fo.presentation.FoUserInterface;
+import com.fo.presentation.FoUserInterfaceImpl;
+import com.fo.utility.EntryNotFoundException;
+import com.fo.utility.InvalidInputException;
 
 public class FoBusinessLogicImpl implements FoBusinessLogic {
 
+	private FoOrderDataAccessImpl dataAccess;
+	private FoUserInterfaceImpl ui;
+	private LinkedList<Product> products;
+	private LinkedList<Tax> taxes;
+	
+	private static LinkedList<Order> orders;
+	
+	public FoBusinessLogicImpl() {
+		this.dataAccess = new FoOrderDataAccessImpl();
+		FoDataAccess taxDataAccess = new FoTaxDataAccessImpl();
+		FoDataAccess productDataAccess = new FoProductDataAccessImpl();
+		this.ui = new FoUserInterfaceImpl();
+		
+		try {
+			taxes = taxDataAccess.readObjects("Taxes.txt");
+			products = productDataAccess.readObjects("Products.txt");
+		} catch (FileNotFoundException ex) {
+			System.out.println("Fatal error: data files could not be found. We apologise for any inconvinience caused.");
+			System.exit(0);
+		} catch (Exception ex) {
+			System.out.println("Fatal error: unhandled error occured. We apologise for any inconvinience caused.");
+			System.exit(0);
+		}
 	}
-	private FoDataAccess foDataAccess = new FoDataAccessImpl();
 
-	// Ju
-	private List<String> statesAbbreviationList() {
-		return new ArrayList<>(Arrays.asList("TX", "WA", "KY", "CA"));
+	@Override
+	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException {
+		// CODE STARTS - Don't delete
+		return null;
+		// CODE ENDS - Don't delete
+		
 	}
 
-	// Ju - need it for placeOrder
-	private List<TemporaryOrder> temporaryOrderStorage = new ArrayList<>();
 
+	@Override
+	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType,
+			BigDecimal area) {
+		// CODE STARTS - Don't delete
+		return null;
+		// CODE ENDS - Don't delete
+		
+	}
+
+	@Override
+	public boolean checkName(String name) throws InvalidInputException {
+		// CODE STARTS - Don't delete
+		return false;
+		// CODE ENDS - Don't delete
+		
+	}
+
+	@Override
+	public boolean checkStateAbbreviation(String stateAbbreviation) throws EntryNotFoundException {
+		// CODE STARTS - Don't delete
+	// I have changed the type of exception and updated the method name to include
+	// "abbreviation"
+	// option1:
+		List<String> states = statesAbbreviationList();
+
+		for (String state : states) {
+			if (state.equals(stateAbbreviation)) {
+				return true;
+			}
+
+		}
+		throw new EntryNotFoundException("Please enter a valid state's abbreviation (TX, WA, KY, or CA).");
+	
+		// CODE ENDS - Don't delete
+		
+	}
+
+	@Override
+	public boolean checkProductType(String productType) throws EntryNotFoundException {
+		// CODE STARTS - Don't delete
+		return false;
+		// CODE ENDS - Don't delete
+		
+	}
+
+
+	@Override
+	public boolean checkArea(BigDecimal area) throws InvalidInputException {
+		// CODE STARTS - Don't delete
+		return false;
+		// CODE ENDS - Don't delete
+		
+	}
+
+	@Override
+	public boolean checkDate(String date) {
+		// CODE STARTS - Don't delete
+		return false;
+		// CODE ENDS - Don't delete
+		
+	}
 	// Ju
 	private void placeOrder(Order order) {
 		// Show order summary
@@ -43,84 +137,44 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 			System.out.println("Order placed successfully!");
 		} else {
 			System.out.println("Order not placed. Returning to the main menu.");
-		}
-	}
-
+      
+      
 	@Override
-	public boolean checkName(String string) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean checkDate(String futureDateString) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override // Ju
-	public boolean calculateOrder(BigDecimal taxRate, BigDecimal area, BigDecimal costPerSquareFoot,
-			BigDecimal laborCostPerSquareFoot) {
-
-		BigDecimal materialCost = (area.multiply(costPerSquareFoot));
+	public Order calculateOrder(LocalDate orderDate, int orderNumber, String customerName, Tax tax, Product product,
+			BigDecimal area) {
+		// CODE STARTS - Don't delete
+			BigDecimal materialCost = (area.multiply(costPerSquareFoot));
 		BigDecimal laborCost = (area.multiply(laborCostPerSquareFoot));
 		BigDecimal tax = (materialCost.add(laborCost)).multiply(taxRate.divide(new BigDecimal(100))); // division
 
 		// Calculate the order's Total price
 		BigDecimal getTotal = materialCost.add(laborCost).add(tax);
 
-		return true;
+		return null;
+		// CODE ENDS - Don't delete
+		
 	}
 
-	public List<Product> getProducts();
-
-	public List<State> getStates();
-
-	// private
-	// static LinkedList<Order> getOrders();
-
-	LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException;
-
-	Order createOrder(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area);
-
-	@Override // Ju
-	// I have changed the type of exception and updated the method name to include
-	// "abbreviation"
-	// option1:
-	public boolean checkStateAbbreviation(String stateAbbreviation) throws InvalidInputException {
-		List<String> states = statesAbbreviationList();
-
-		for (String state : states) {
-			if (state.equals(stateAbbreviation)) {
-				return true;
-			}
-
-		}
-		throw new InvalidInputException("Please enter a valid state's abbreviation (TX, WA, KY, or CA).");
+	@Override
+	public Order getOrder(int orderNumber) {
+		// CODE STARTS - Don't delete
+		return null;
+		// CODE ENDS - Don't delete
+		
 	}
 
-	// option2: hardcoded, no need for List<String> states.
-	public boolean checkStateAbbreviation(String stateAbbreviation) throws InvalidInputException {
-		try {
-			if (state.equals("TX") || state.equals("WA") || state.equals("KY") || state.equals("CA")) {
-		        return true;
-		} catch (InvalidInputException ex) {
-			throw new InvalidInputException("Please enter a valid state's abbreviation (TX, WA, KY, or CA).");
-		}
+
+	@Override
+	public LinkedList<Order> editOrder(int orderNumber, Order order) {
+		// CODE STARTS - Don't delete
+		return null;
+		// CODE ENDS - Don't delete
+		
 	}
 
-	public boolean checkProductType(String productType) throws EntryNotFoundException;
-
-	public boolean checkArea(BigDecimal area) throws InvalidInputException;
-
-	// private
-	// int getOrderNumber();
-
-	public Order getOrder(int orderNumber);
-
-	public LinkedList<Order> editOrder(int orderNumber, Order order);
-
-	@Override // Ju
+	@Override
 	public void removeOrder(Order order) throws NoOrderFoundException {
+    // CODE STARTS - Don't delete
 		boolean status = false;
 
 		for (Order currentOrder : orderList) {
@@ -133,9 +187,45 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		if (!status) {
 			throw new NoOrderFoundException("Order number " + order.getOrderNumber() + " not found");
 		}
+		// CODE ENDS - Don't delete
+
 	}
 
-	public void saveOrdersToAFile();
+  
+	@Override
+	public void saveOrdersToAFile() {
+		// CODE STARTS - Don't delete
+		
+		// CODE ENDS - Don't delete
 
-	public void exportData();
+	}
+
+	@Override
+	public void exportData() {
+		// CODE STARTS - Don't delete
+		
+		// CODE ENDS - Don't delete
+	}
+
+	/*
+	 * =============================================================================
+	 * =============
+	 * 
+	 * @Override public boolean checkName(String string) { // TODO Auto-generated
+	 * method stub return false; }
+	 * 
+	 * public boolean checkDate(String futureDateString) { // TODO Auto-generated
+	 * method stub return false; }
+	 * 
+	 * @Override public boolean CalculateOrder(BigDecimal taxRate, BigDecimal area,
+	 * BigDecimal costPerSquareFoot, BigDecimal laborCostPerSquareFoot) { //
+	 * BigDecimal materialCost = (area.multiply(costPerSquareFoot)); // BigDecimal
+	 * laborCost = (area.multiply(laborCostPerSquareFoot)); // BigDecimal tax =
+	 * (materialCost.add(laborCost)).multiply(taxRate.divide(new BigDecimal(100)));
+	 * // division // // // Calculate the order's Total price // BigDecimal getTotal
+	 * = materialCost.add(laborCost).add(tax); // TODO Auto-generated method stub
+	 * return false; }
+	 * =============================================================================
+	 * ============
+	 */
 }

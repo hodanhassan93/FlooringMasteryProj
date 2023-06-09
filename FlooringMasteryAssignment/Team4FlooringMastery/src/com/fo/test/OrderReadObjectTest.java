@@ -42,10 +42,10 @@ class OrderReadObjectTest {
 		String fileName = "Orders_06012013.txt";
 
 		try {
-			LinkedList<Order> orders = orderReadObject.readObject(fileName);
+			LinkedList<Order> orders = orderReadObject.readObjects(fileName);
 			assertNotNull(orders);
-		} catch (FileNotFoundException ex) {
-
+		} catch (Exception ex) {
+			fail();
 		}
 	}
 
@@ -55,6 +55,6 @@ class OrderReadObjectTest {
 		orderReadObject = new FoOrderDataAccessImpl();
 		String fileName = "foo.txt";
 
-		assertThrows(FileNotFoundException.class, () -> orderReadObject.readObject(fileName));
+		assertThrows(FileNotFoundException.class, () -> orderReadObject.readObjects(fileName));
 	}
 }

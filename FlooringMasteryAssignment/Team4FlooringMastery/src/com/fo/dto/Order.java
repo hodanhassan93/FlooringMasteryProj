@@ -5,26 +5,31 @@ import java.time.LocalDate;
 
 
 public class Order {
-	private LocalDate orderDate;
 	private int orderNumber;
 	private String customerName;
-	private Tax taxInfo;
-	private Product product;
+	private String state;
+	private BigDecimal taxRate;
+	private String productType;
 	private BigDecimal area;
+	private BigDecimal costPerSquareFoot;
+	private BigDecimal laborCostperSquareFoot;
 	private BigDecimal materialCost;
 	private BigDecimal laborCost;
 	private BigDecimal tax;
 	private BigDecimal total;
 	
-	public Order(LocalDate orderDate, int orderNumber, String customerName, Tax taxInfo, Product product,
-			BigDecimal area, BigDecimal materialCost, BigDecimal laborCost, BigDecimal tax, BigDecimal total) {
+
+	public Order(int orderNumber, String customerName, String state, BigDecimal taxRate, String productType, 
+			BigDecimal area,BigDecimal costPerSquareFoot, BigDecimal laborCostperSquareFoot, BigDecimal materialCost, BigDecimal laborCost, BigDecimal tax, BigDecimal total) {
 		super();
-		this.orderDate = orderDate;
 		this.orderNumber = orderNumber;
 		this.customerName = customerName;
-		this.taxInfo = taxInfo;
-		this.product = product;
+		this.state = state;
+		this.taxRate = taxRate;
+		this.productType = productType;
 		this.area = area;
+		this.costPerSquareFoot = costPerSquareFoot;
+		this.laborCostperSquareFoot = laborCostperSquareFoot;
 		this.materialCost = materialCost;
 		this.laborCost = laborCost;
 		this.tax = tax;
@@ -39,22 +44,6 @@ public class Order {
 		this.customerName = customerName;
 	}
 
-	public Tax getTaxInfo() {
-		return taxInfo;
-	}
-
-	public void setTaxInfo(Tax taxInfo) {
-		this.taxInfo = taxInfo;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
 	public BigDecimal getArea() {
 		return area;
 	}
@@ -63,10 +52,7 @@ public class Order {
 		this.area = area;
 	}
 
-	public LocalDate getOrderDate() {
-		return orderDate;
-	}
-
+	
 	public int getOrderNumber() {
 		return orderNumber;
 	}
@@ -87,13 +73,73 @@ public class Order {
 		return total;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public BigDecimal getTaxRate() {
+		return taxRate;
+	}
+
+	public void setTaxRate(BigDecimal taxRate) {
+		this.taxRate = taxRate;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+
+	public BigDecimal getCostPerSquareFoot() {
+		return costPerSquareFoot;
+	}
+
+	public void setCostPerSquareFoot(BigDecimal costPerSquareFoot) {
+		this.costPerSquareFoot = costPerSquareFoot;
+	}
+
+	public BigDecimal getLaborCostperSquareFoot() {
+		return laborCostperSquareFoot;
+	}
+
+	public void setLaborCostperSquareFoot(BigDecimal laborCostperSquareFoot) {
+		this.laborCostperSquareFoot = laborCostperSquareFoot;
+	}
+
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+	public void setMaterialCost(BigDecimal materialCost) {
+		this.materialCost = materialCost;
+	}
+
+	public void setLaborCost(BigDecimal laborCost) {
+		this.laborCost = laborCost;
+	}
+
+	public void setTax(BigDecimal tax) {
+		this.tax = tax;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
 	@Override
 	public String toString() {
-		return "Order [orderDate=" + orderDate + ", orderNumber=" + orderNumber + ", customerName=" + customerName
-				+ ", taxInfo=" + taxInfo + ", product=" + product + ", area=" + area + ", materialCost=" + materialCost
-				+ ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + "]";
+		return "Order [orderNumber=" + orderNumber + ", customerName=" + customerName + ", state=" + state
+				+ ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot="
+				+ costPerSquareFoot + ", laborCostperSquareFoot=" + laborCostperSquareFoot + ", materialCost="
+				+ materialCost + ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + "]";
 	}
-		
 }
 
 
