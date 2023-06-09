@@ -21,7 +21,12 @@ class CheckDateTest {
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 		String futureDateString = "2023-12-31";
 
-		boolean result = businessLogic.checkDate(futureDateString);
+		boolean result= false;
+		try {
+			result = businessLogic.checkDate(futureDateString);
+		} catch (InvalidDateException e) {
+			fail();
+		}
 
 		Assertions.assertTrue(result);
 	}
@@ -41,7 +46,12 @@ class CheckDateTest {
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 		String pastDateString = "2020-01-01";
 
-		boolean result = businessLogic.checkDate(pastDateString);
+		boolean result=false;
+		try {
+			result = businessLogic.checkDate(pastDateString);
+		} catch (InvalidDateException e) {
+			fail();
+		}
 
 		Assertions.assertFalse(result);
 	}
