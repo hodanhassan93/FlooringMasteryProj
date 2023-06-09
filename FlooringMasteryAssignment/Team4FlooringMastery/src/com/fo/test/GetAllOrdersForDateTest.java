@@ -8,10 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertTrue;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.stream.Stream;
 import com.fo.service.*;
@@ -20,8 +21,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+
 
 class GetAllOrdersForDateTest {
 
@@ -44,18 +44,18 @@ class GetAllOrdersForDateTest {
 	
 	@Test
 	
-	 void test(String fileName) throws NoOrdersFoundException, IOException {
-
-
+	 void test() throws NoOrdersFoundException, IOException {
 		
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+		
+        LocalDate date = LocalDate.of(2013, 01, 06);
+        String formattedDate = date.format(dateTimeFormatter);
+        System.out.println(formattedDate);
 		FoOrderDataAccessImpl dao = new FoOrderDataAccessImpl();
 		FoBusinessLogicImpl fobusinessLogicImpl = new FoBusinessLogicImpl();
-		 boolean result = fobusinessLogicImpl.searchOrdersByDate(1);
-		    assertTrue(result);
+		 LinkedList<Order> result = fobusinessLogicImpl.getAllOrdersForDate(formattedDate);
+		 assertTrue(result.size() > 0);
 		
-		Path path = Paths.get(fileName);
-		
-//		File orderFile = new File(fileName);
 
 		
 
