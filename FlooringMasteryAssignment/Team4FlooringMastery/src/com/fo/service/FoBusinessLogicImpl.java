@@ -19,6 +19,8 @@ import com.fo.dataaccess.FoProductDataAccessImpl;
 import com.fo.dataaccess.FoTaxDataAccessImpl;
 import com.fo.presentation.FoUserInterface;
 import com.fo.presentation.FoUserInterfaceImpl;
+import com.fo.utility.EntryNotFoundException;
+import com.fo.utility.InvalidDateException;
 import com.fo.utility.InvalidInputException;
 import com.fo.utility.NoOrdersFoundException;
 
@@ -80,7 +82,16 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	@Override
 	public boolean checkName(String name) throws InvalidInputException {
 		// CODE STARTS - Don't delete
-		return false;
+		if (name == null || name.isEmpty()) {
+            return false;
+        }
+
+        if (!name.matches("[a-zA-Z\\s]+")) {
+            throw new InvalidInputException("Invalid characters in name: " + name);
+        }
+
+        return true;
+    
 		// CODE ENDS - Don't delete
 
 	}
@@ -120,9 +131,17 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public boolean checkDate(String date) {
+	public boolean checkDate(String date) throws InvalidDateException{
 		// CODE STARTS - Don't delete
-		return false;
+        try {
+            LocalDate parsedDate = LocalDate.parse(date);
+            LocalDate currentDate = LocalDate.now();
+
+            return parsedDate.isAfter(currentDate);
+        } catch (Exception e) {
+            throw new InvalidDateException("Invalid date format: " + date);
+        }
+    
 		// CODE ENDS - Don't delete
 
 	}
