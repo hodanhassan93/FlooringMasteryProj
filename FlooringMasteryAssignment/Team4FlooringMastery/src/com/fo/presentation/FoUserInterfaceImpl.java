@@ -1,5 +1,6 @@
 package com.fo.presentation;
 
+import com.fo.dto.Order;
 import com.fo.service.*;
 
 import java.io.FileNotFoundException;
@@ -105,12 +106,42 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 	
 				break;
 
-		// 4 - REMOVE ORDER
+		// 4 - REMOVE ORDER - Ju
 			case "4":
-	
+				System.out.println("Enter order date (YYYY-MM-DD):");
+				String dateToCheck = scanner.nextLine();
+				
+				try {
+					if (foBusinessLogic.checkDate(dateToCheck) == true) {
+						System.out.println("Enter the order number that you want to remove:");
+						int orderToCheck = scanner.nextInt();
+						
+						if (foBusinessLogic.getOrder(orderToCheck) == null ) {
+							System.out.println("You have entered an invalid order number");
+							
+						}
+						else {
+							//Order orderToRemove = foBusinessLogic.getOrder(fileName, orderToCheck);
+							foBusinessLogic.removeOrder(order);
+							System.out.println("Order successfully removed.");
+						}
+					}
+					
+					else {
+						System.out.println("You have entered an invalid date");
+					}
+				}catch(InvalidDateException ex1)
+				{
+					System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.");
+				}catch(
+				FileNotFoundException ex2)
+				{
+				System.out.println("No orders found for the given date.");
+				}
+
 				break;
 
-		// 5 - EXPORT ORDERS
+		// 5 - SAVE ORDER TO A FILE
 			case "5":
 				foBusinessLogic.exportData();
 				System.out.println("Your data has been stored");
@@ -125,27 +156,22 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			default:
 				System.out.println("Invalid Choice. Please pick a menu item.");
 		}
-	}
-	
-	/* Switch case - option 2
-	 * 
-	// Show order summary
-//    System.out.println("Order Summary:");
-//    System.out.println("Order Date: " + order.getOrderDate());
-//    System.out.println("Customer Name: " + order.getCustomerName());
-//    System.out.println("State: " + order.getStateAbbreviation());
-//    System.out.println("Product Type: " + order.getProductType());
-//    System.out.println("Area: " + order.getArea());
-//    System.out.println("Tax: " + tax);
-//    System.out.println("Total Price: " + totalPrice);
-//	System.out.print("Place the order? (Y/N): ");
-//	String placeOrder = scanner.nextLine();
-//	
-//	if (placeOrder.equalsIgnoreCase("Y")) {
- * //			System.out.println("Order placed successfully!");
-//		} else {
-//			System.out.println("Order not placed. Returning to the main menu.");
-//		}
+}
+
+/*
+ * Switch case - option 2
  * 
-	*/
+ * // Show order summary // System.out.println("Order Summary:"); //
+ * System.out.println("Order Date: " + order.getOrderDate()); //
+ * System.out.println("Customer Name: " + order.getCustomerName()); //
+ * System.out.println("State: " + order.getStateAbbreviation()); //
+ * System.out.println("Product Type: " + order.getProductType()); //
+ * System.out.println("Area: " + order.getArea()); // System.out.println("Tax: "
+ * + tax); // System.out.println("Total Price: " + totalPrice); //
+ * System.out.print("Place the order? (Y/N): "); // String placeOrder =
+ * scanner.nextLine(); // // if (placeOrder.equalsIgnoreCase("Y")) { //
+ * System.out.println("Order placed successfully!"); // } else { //
+ * System.out.println("Order not placed. Returning to the main menu."); // }
+ * 
+ */
 }
