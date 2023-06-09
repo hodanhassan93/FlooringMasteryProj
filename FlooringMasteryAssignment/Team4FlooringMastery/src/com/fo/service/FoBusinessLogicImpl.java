@@ -114,7 +114,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public boolean StateAbbreviation(String stateAbbreviation) throws EntryNotFoundException {
+	public boolean checkStateAbbreviation(String stateAbbreviation) throws EntryNotFoundException {
 		// CODE STARTS - Don't delete
 		// I have changed the type of exception and updated the method name to include
 		// "abbreviation"
@@ -308,6 +308,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
 		return foTrackerDataAccess.readOrderNumberTracker();
 	}
+
 
 	/*
 	 * =============================================================================
