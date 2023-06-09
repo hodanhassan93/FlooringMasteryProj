@@ -27,7 +27,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 	}
 
 	@Override
-	public void performMenu(String choice) throws Exception {
+	public void performMenu(String choice){
 		foBusinessLogic = new FoBusinessLogicImpl();
 		Scanner scanner = new Scanner(System.in);
 		switch (choice) {
