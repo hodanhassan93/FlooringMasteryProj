@@ -18,7 +18,7 @@ public interface FoBusinessLogic {
 	public LinkedList<Order> getAllOrdersForDate(String date) throws FileNotFoundException;
 	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area);
 	public boolean checkName(String name) throws InvalidInputException;
-	public boolean StateAbbreviation(String stateAbbreviation) throws EntryNotFoundException;
+	public boolean checkStateAbbreviation(String stateAbbreviation) throws EntryNotFoundException;
 	public boolean checkProductType(String productType) throws EntryNotFoundException;
 	public boolean checkArea(String area) throws InvalidInputException;
 	public boolean checkDate(String date) throws InvalidDateException;
