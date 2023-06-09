@@ -18,7 +18,7 @@ class ProductReadObjectTest {
 	@BeforeEach
 	public void setup() {
 		try {
-			productList = new FoProductDataAccessImpl().readObject("Products.txt");
+			productList = new FoProductDataAccessImpl().readObjects("Products.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,7 +58,7 @@ class ProductReadObjectTest {
 		boolean exceptionThrown = false;
 
 		try {
-			productList = new FoProductDataAccessImpl().readObject("NonexistentFile.txt");
+			productList = new FoProductDataAccessImpl().readObjects("NonexistentFile.txt");
 		} catch (Exception e) {
 			if (e instanceof FileNotFoundException)
 				exceptionThrown = true;

@@ -1,11 +1,10 @@
 package com.fo.dataaccess;
 
-import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.LinkedList;
 import com.fo.dto.*;
 
 public interface FoDataAccess {
+
 
 	
 
@@ -14,5 +13,8 @@ public interface FoDataAccess {
 	boolean writeObject(LinkedList<Order> orders, String FileName) throws FileNotFoundException;
 
 	LinkedList<Product> readObject(String filename) throws Exception;
+
+	public <E>LinkedList<E> readObjects(String FileName) throws Exception;
+
 }
 

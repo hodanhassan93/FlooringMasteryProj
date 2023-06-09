@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.fo.dataaccess.FoTaxDataAccessImpl;
@@ -30,7 +27,7 @@ class TaxReadObjectTest {
 	@Test
 	void readObjectTest01() {
 		try {
-			LinkedList<Tax> taxes = taxDataAccess.readObject("Taxes.txt");
+			LinkedList<Tax> taxes = taxDataAccess.readObjects("Taxes.txt");
 			assertEquals(true, (taxes != null));
 		} catch (Exception FileNotFoundException) {
 			fail();
@@ -39,7 +36,7 @@ class TaxReadObjectTest {
 
 	@Test
 	void readObjectTest02() {
-		assertThrows(FileNotFoundException.class, () -> taxDataAccess.readObject("foo"));
+		assertThrows(FileNotFoundException.class, () -> taxDataAccess.readObjects("foo"));
 
 	}
 
