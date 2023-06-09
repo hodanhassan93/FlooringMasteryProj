@@ -15,15 +15,7 @@ public class FlooringOrders {
 			foUserInterface.showMenu();
 			System.out.println("What would you like to do:");
 			String choice = scanner.nextLine();
-			try {
-				foUserInterface.performMenu(choice);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			foUserInterface.performMenu(choice);
 		}
 	}
 }
