@@ -9,26 +9,16 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import com.fo.dataaccess.*;
-
 import com.fo.dto.Order;
 import com.fo.dto.Product;
 import com.fo.dto.Tax;
 import com.fo.utility.EntryNotFoundException;
-
-public class FoBusinessLogicImpl implements FoBusinessLogic {
-	FoDataAccess foDataAccess = new FoDataAccessImpl();
-
-
 import com.fo.dataaccess.FoDataAccess;
 import com.fo.dataaccess.FoOrderDataAccessImpl;
 import com.fo.dataaccess.FoProductDataAccessImpl;
 import com.fo.dataaccess.FoTaxDataAccessImpl;
-import com.fo.dto.Order;
-import com.fo.dto.Product;
-import com.fo.dto.Tax;
 import com.fo.presentation.FoUserInterface;
 import com.fo.presentation.FoUserInterfaceImpl;
-import com.fo.utility.EntryNotFoundException;
 import com.fo.utility.InvalidInputException;
 import com.fo.utility.NoOrdersFoundException;
 
@@ -40,6 +30,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	private LinkedList<Tax> taxes;
 	private LinkedList<Order> temporaryOrderStorage;
 	private static LinkedList<Order> orders;
+	private LocalDate orderDate;
 
 	public FoBusinessLogicImpl() {
 		this.dataAccess = new FoOrderDataAccessImpl();
@@ -62,21 +53,29 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	@Override
 	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException {
-		// CODE STARTS - Don't delete
+
+		String fileName = "Order_" + date + ".txt";
+
+		File f = new File(fileName);
+
+		try {
+			this.orders = dataAccess.readObjects(fileName);
+			return this.orders;
+		} catch (FileNotFoundException ex) {
+			throw new FileNotFoundException("File not found.");
+		} catch (Exception ex) {
+		}
+
 		return null;
-		// CODE ENDS - Don't delete
 	}
-
-
+	
 	@Override
 	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType,
 			BigDecimal area) {
 		// CODE STARTS - Don't delete
-		return null;
+				return null;
 		// CODE ENDS - Don't delete
-
 	}
-
 
 	@Override
 	public boolean checkName(String name) throws InvalidInputException {
@@ -85,32 +84,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		// CODE ENDS - Don't delete
 
 	}
-
-	// private
-	// static LinkedList<Order> getOrders();
-
-	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException {
-
-		String fileName = "Order_" + date + ".txt";
-
-		File f = new File(fileName);
-
-		if (true) {
-
-			foDataAccess.readOrders(fileName);
-
-			return orders;
-		}
-
-		else {
-
-			throw new FileNotFoundException("File not found");
-
-		}
-
-	}
-
-	Order createOrder(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area);
 
 	@Override
 	public boolean StateAbbreviation(String stateAbbreviation) throws EntryNotFoundException {
@@ -139,21 +112,12 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public boolean checkProductType(String productType) throws EntryNotFoundException {
-		// CODE STARTS - Don't delete
-		return false;
-		// CODE ENDS - Don't delete
-
-	}
-
-	@Override
 	public boolean checkArea(String area) throws InvalidInputException {
 		// CODE STARTS - Don't delete
 		return false;
 		// CODE ENDS - Don't delete
 
 	}
-
 
 	@Override
 	public boolean checkDate(String date) {
@@ -180,66 +144,48 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		// Calculate the order's Total price
 		BigDecimal getTotal = materialCost.add(laborCost).add(taxCost).setScale(2, RoundingMode.HALF_UP);
 
-		return new Order(orderNumber, customerName, tax.getStateAbbreviation(), tax.getTaxRate(), product.getProductType(), 
-				area, product.getCostPerSquareFoot(), product.getLaborCostPerSquareFoot(), materialCost, laborCost, taxCost, getTotal);
+		return new Order(orderNumber, customerName, tax.getStateAbbreviation(), tax.getTaxRate(),
+				product.getProductType(), area, product.getCostPerSquareFoot(), product.getLaborCostPerSquareFoot(),
+				materialCost, laborCost, taxCost, getTotal);
 		// CODE ENDS - Don't delete
 
 	}
 
-	public boolean checkProductType(String productType) throws EntryNotFoundException
-
-	{
+	@Override
+	public boolean checkProductType(String productType) throws EntryNotFoundException {
 		LinkedList<Order> matches = new LinkedList<Order>();
 
 		for (Order order : orders) {
 
 			if (productType.toLowerCase().contains(order.getProductType().toLowerCase())) {
-				
+
 				matches.add(order);
 
 			}
-			
+
 			else if (matches.size() == 0) {
-				
+
 				throw new EntryNotFoundException("No product with the inserted type exists");
 			}
 		}
-		
-	
-
+		return false;
 	}
 
-	// private
-	// int getOrderNumber();
-
-	public Order getOrder(int orderNumber)
-	
-	{
+	@Override
+	public Order getOrder(int orderNumber) throws Exception{
 		LinkedList<Order> matches = new LinkedList<Order>();
-		
+
 		for (Order order : orders) {
 
 			if (order.getOrderNumber() == orderNumber) {
-				
+
 				matches.add(order);
 
-			}
-			
-			else if (matches.size() == 0) {
-				
+			} else if (matches.size() == 0) {
 				throw new EntryNotFoundException("No product with the inserted type exists");
 			}
 		}
-		
-	
-		
-
-	@Override
-	public Order getOrder(int orderNumber) {
-		// CODE STARTS - Don't delete
 		return null;
-		// CODE ENDS - Don't delete
-
 	}
 
 	@Override
@@ -266,7 +212,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 			throw new NoOrdersFoundException("Order number " + order.getOrderNumber() + " not found.");
 		}
 		// CODE ENDS - Don't delete
-
 
 	}
 

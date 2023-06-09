@@ -81,45 +81,4 @@ public class FoOrderDataAccessImpl implements FoDataAccess {
 
 	}
 
-	
-
-
-	@Override
-	public LinkedList<Order> readOrders(String FileName) throws Exception{
-		
-		LinkedList<Order> orders=new LinkedList<Order>();
-		
-		FileReader fileReader = new FileReader(FileName);
-		
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-		Scanner scanner = new Scanner(bufferedReader);
-		while (scanner.hasNext()) {
-			String currentLine = scanner.nextLine();
-			
-			String values[]=currentLine.split(",");
-			
-			Order order =new Order( Integer.parseInt(values[0]),values[1],values[2],new BigDecimal(values[3]),values[4],new BigDecimal(values[5]),new BigDecimal(values[6]),new BigDecimal(values[7])
-					,new BigDecimal(values[8]),new BigDecimal(values[9]),new BigDecimal(values[10]),new BigDecimal(values[11]));
-
-			orders.add(order);
-		}
-		fileReader.close();
-		bufferedReader.close();
-		
-		return orders;
-	}
-
-
-
-	@Override
-	public LinkedList<Product> readObject(String filename) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-
-
-
 }

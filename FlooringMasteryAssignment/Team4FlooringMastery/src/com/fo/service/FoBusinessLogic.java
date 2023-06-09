@@ -23,7 +23,7 @@ public interface FoBusinessLogic {
 	public boolean checkArea(String area) throws InvalidInputException;
 	public boolean checkDate(String date) throws InvalidDateException;
 	public Order calculateOrder(LocalDate orderDate, int orderNumber, String customerName, Tax tax, Product product, BigDecimal area);
-	public Order getOrder(int orderNumber);
+	public Order getOrder(int orderNumber) throws Exception;
 	public LinkedList<Order> editOrder(int orderNumber, Order order);
 	public void removeOrder(Order order) throws NoOrdersFoundException;
 	public void saveOrdersToAFile();
