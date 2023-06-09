@@ -1,10 +1,14 @@
 package com.fo.presentation;
 
+import com.fo.dto.Order;
 import com.fo.service.*;
 
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Scanner;
+
+import com.fo.utility.EntryNotFoundException;
 import com.fo.utility.InvalidDateException;
 import com.fo.utility.InvalidInputException;
 
@@ -50,54 +54,109 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 		// 2 - ADD ORDER
 			case "2":
-	
 				boolean test = false;
+				String date;
 				do {
 					System.out.println("Enter order date (YYYY-MM-DD):");
-					String date = scanner.nextLine();
+					date = scanner.nextLine();
 	
 					try {
 						test = foBusinessLogic.checkDate(date);
 					} catch (InvalidDateException ex) {
-						System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.");
+						System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.\n");
 					}
 	
 					if (test == false)
-						System.out.println("Please provide a future date.");
+						System.out.println("Please provide a future date.\n");
 				} while (test == false);
 	
 				test = false;
+				String name;
 				do {
-					System.out.println("Enter you name");
-					String date2 = scanner.nextLine();
+					System.out.println("Enter your name:");
+					name = scanner.nextLine();
 	
 					try {
-						test = foBusinessLogic.checkDate(date2);
-					} catch (InvalidDateException ex) {
-						System.out.println("Please enter a date.");
+						test = foBusinessLogic.checkName(name);
+					} catch (InvalidInputException ex) {
+						System.out.println("Invalid input. Name can only contain numbers, letters, commas and periods.\n");
 					}
 	
 					if (test == false)
-						System.out.println("Please provide a future date.");
+						System.out.println("Name cannot be blank.\n");
 				} while (test == false);
+				
+				test = false;
+				String state;
+				do {
+					System.out.println("Enter state abbreviation:");
+					state = scanner.nextLine();
 	
-	//			if () {
-	//				System.out.println("Please enter your name");
-	//				String name = scanner.nextLine();
-	//				if(foBusinessLogic.checkName(name)==true) {
-	//					System.out.println("Please enter your state");
-	//					String state = scanner.nextLine();
-	//					if(foBusinessLogic.checkState(state)==true) {
-	//						
-	//					}
-	//				}
-	//				else {
-	//					throw new InvalidInputException("You have entered an invalid input");	
-	//				}
-	//			}
-	//			else {
-	//				throw new InvalidDateException("You have entered an invalid date");
-	//			}
+					try {
+						test = foBusinessLogic.StateAbbreviation(state);
+					} catch (EntryNotFoundException ex) {
+						System.out.println("The state you entered is invalid.\n");
+					}
+	
+					if (test == false)
+						System.out.println("State cannot be blank.\n");
+				} while (test == false);
+				
+				test = false;
+				String product;
+				do {
+					// show list of products
+					System.out.println("Enter product name:");
+					product = scanner.nextLine();
+	
+					try {
+						test = foBusinessLogic.checkProductType(product);
+					} catch (EntryNotFoundException ex) {
+						System.out.println("Invalid input. Please choose one of the options above.\n");
+					}
+	
+					if (test == false)
+						System.out.println("Product name cannot be blank. Please choose one of the options above.\n");
+				} while (test == false);
+				
+				test = false;
+				String area;
+				do {
+					System.out.println("Enter the area of flooring you desire:");
+					area = scanner.nextLine();
+	
+					try {
+						test = foBusinessLogic.checkArea(area);
+					} catch (InvalidInputException ex) {
+						System.out.println("Invalid input. Area must be a positive integer larger than 100.\n");
+					}
+	
+					if (test == false)
+						System.out.println("Area cannot be blank.\n");
+				} while (test == false);
+				
+				Order order = foBusinessLogic.createOrder(LocalDate.parse(date), name, state, product, new BigDecimal(area));
+				
+				System.out.println("\nHere is your order summary:");
+
+			    System.out.println("Order Date: " + LocalDate.parse(date));
+			    System.out.println("Customer Name: " + order.getCustomerName());
+			    System.out.println("State: " + order.getState());
+			    System.out.println("Product Type: " + order.getProductType());
+			    System.out.println("Area: " + order.getArea());
+			    System.out.println("Material cost: " + order.getMaterialCost());
+			    System.out.println("Labor cost: " + order.getLaborCost());
+			    System.out.println("Tax: " + order.getTax());
+			    System.out.println("Total Price: " + order.getTotal());
+				System.out.println("Place the order? (Y/N):");
+				String placeOrder = scanner.nextLine();
+				
+				if (placeOrder.equalsIgnoreCase("Y")) {
+			  			System.out.println("Order placed successfully!");
+					} else {
+						System.out.println("Order not placed. Returning to the main menu.");
+					}
+				
 				break;
 
 		// 3 - EDIT EXISTING ORDER

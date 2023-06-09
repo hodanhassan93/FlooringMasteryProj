@@ -1,5 +1,6 @@
 package com.fo.client;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 import com.fo.dataaccess.*;
@@ -19,21 +20,25 @@ public class MainTest {
 //			System.out.println(ex);
 //		}
 
-		try {
-			orders = dataAccess.readObjects("Orders_06012013.txt");
-		} catch (Exception ex) {
-			System.out.println(ex);
-		}
+//		try {
+//			orders = dataAccess.readObjects("Orders_06012013.txt");
+//		} catch (Exception ex) {
+//			System.out.println(ex);
+//		}
 
 //		System.out.println(orders.get(0));
 
-		try {
-			dataAccess.writeObject(orders, "Orders_test.txt");
-		} catch (Exception ex) {
-			System.out.println(ex);
-		}
+//		try {
+//			dataAccess.writeObject(orders, "Orders_test.txt");
+//		} catch (Exception ex) {
+//			System.out.println(ex);
+//		}
 
 //		System.out.println(products.get(1));
+		
+		LocalDate date = LocalDate.of(2013,06,01);
+		
+		System.out.println("Order" + date + ".txt");
 
 	}
 

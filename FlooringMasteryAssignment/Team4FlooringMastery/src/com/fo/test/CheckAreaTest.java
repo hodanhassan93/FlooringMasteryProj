@@ -25,27 +25,35 @@ class CheckAreaTest {
 
 	@Test
 	void CheckArea01() {
-		assertThrows(InvalidInputException.class, service.checkArea("text!"));
+		assertThrows(InvalidInputException.class, () -> service.checkArea("text!"));
 	}
-	
+
 	@Test
 	void CheckArea02() {
-		assertThrows(InvalidInputException.class, service.checkArea("10"));
+		assertThrows(InvalidInputException.class, () -> service.checkArea("10"));
 	}
-	
+
 	@Test
 	void CheckArea03() {
-		assertEquals(true, service.checkArea("150"));
+		try {
+			assertEquals(true, service.checkArea("150"));
+		} catch (Exception ex) {
+			fail();
+		}
 	}
-	
+
 	@Test
 	void CheckArea04() {
-		assertThrows(InvalidInputException.class, service.checkArea("-99"));
+		assertThrows(InvalidInputException.class, () -> service.checkArea("-99"));
 	}
-	
+
 	@Test
 	void CheckArea05() {
-		assertEquals(false, service.checkArea(""));
+		try {
+			assertEquals(false, service.checkArea(""));
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 }
