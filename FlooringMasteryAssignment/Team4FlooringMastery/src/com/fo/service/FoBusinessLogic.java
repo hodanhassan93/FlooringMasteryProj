@@ -16,9 +16,9 @@ public interface FoBusinessLogic {
 	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException;
 	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area);
 	public boolean checkName(String name) throws InvalidInputException;
-	public boolean checkState(String state) throws EntryNotFoundException;
+	public boolean StateAbbreviation(String stateAbbreviation) throws InvalidInputException;
 	public boolean checkProductType(String productType) throws EntryNotFoundException;
-	public boolean checkArea(BigDecimal area) throws InvalidInputException;
+	public boolean checkArea(String area) throws InvalidInputException;
 	public boolean checkDate(String date) throws InvalidDateException;
 	public Order calculateOrder(LocalDate orderDate, int orderNumber, String customerName, Tax tax, Product product, BigDecimal area);
 	public Order getOrder(int orderNumber);
@@ -40,7 +40,7 @@ public interface FoBusinessLogic {
 	
 	// private
 	//static LinkedList<Order> getOrders();
-	
+
 	// private
 	//int getOrderNumber();
 	
