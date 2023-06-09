@@ -6,7 +6,7 @@ import com.fo.utility.NoOrdersFoundException;
 
 public interface FoUserInterface {
 	
-	public void performMenu(String choice) throws NoOrdersFoundException;
+	public void performMenu(String choice);
 	public void showMenu();
 
 }
