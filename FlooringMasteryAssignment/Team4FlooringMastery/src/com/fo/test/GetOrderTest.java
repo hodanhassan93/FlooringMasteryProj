@@ -1,9 +1,10 @@
 package com.fo.test;
 
 import com.fo.dto.*;
+import com.fo.utility.EntryNotFoundException;
 import com.fo.utility.NoOrdersFoundException;
 
-import static org.junit.Assert.assertTrue;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
@@ -17,8 +18,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class GetOrderTest {
 
@@ -39,15 +38,15 @@ class GetOrderTest {
 	}
 
 	@Test
-	void GetOrder01() {
+	void GetOrder01() throws Exception {
 		FoOrderDataAccessImpl dao = new FoOrderDataAccessImpl();
 		FoBusinessLogicImpl foBusinessLogicImpl = new FoBusinessLogicImpl();
 
 		try {
-			LinkedList<Order> ordersList = dao.readObject("Orders_06012013.txt");
+			LinkedList<Order> ordersList = dao.readObjects("Orders_06012013.txt");
 
 			for (Order order : ordersList) {
-				boolean result = (foBusinessLogicImpl.getOrder(1) != null);
+				boolean result = (foBusinessLogicImpl.getOrder("Orders_06012013.txt",1) != null);
 				assertTrue(result);
 			}
 		} catch (FileNotFoundException ex) {
@@ -56,15 +55,15 @@ class GetOrderTest {
 	}
 
 	@Test
-	void GetOrder02() {
+	void GetOrder02() throws Exception {
 		FoOrderDataAccessImpl dao = new FoOrderDataAccessImpl();
 		FoBusinessLogicImpl foBusinessLogicImpl = new FoBusinessLogicImpl();
 
 		try {
-			LinkedList<Order> ordersList = dao.readObject("Orders_06012013.txt");
+			LinkedList<Order> orders = dao.readObjects("Orders_06012013.txt");
 
-			for (Order order : ordersList) {
-				boolean result = (foBusinessLogicImpl.getOrder(99) == null);
+			for (Order order : orders) {
+				boolean result = (foBusinessLogicImpl.getOrder("Orders_06012013.txt",99) == null);
 				assertTrue(result);
 			}
 		} catch (FileNotFoundException ex) {
