@@ -36,7 +36,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	private FoUserInterfaceImpl ui;
 	private LinkedList<Product> products;
 	private LinkedList<Tax> taxes;
-	private HashMap<LocalDate,Order> temporaryOrderStorage = new HashMap<LocalDate,Order>();
+	private LinkedList<Order> temporaryOrderStorage;
 	private LinkedList<Order> orders;
 	private LocalDate orderDate;
 
@@ -60,7 +60,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public LinkedList<Order> getAllOrdersForDate(String date) throws FileNotFoundException {
+	public LinkedList<Order> getAllOrdersForDate(String date){
 
 		String fileName = "Orders_" + date + ".txt";
 		
@@ -96,16 +96,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 		
 //		 CODE ENDS - Don't delete
-	}
-	
-	
-	public HashMap<LocalDate, Order> getUnsavedOrders(HashMap<LocalDate, Order> temp) {
-		
-		temp.putAll(temporaryOrderStorage);
-		
-		return temporaryOrderStorage;
-		
-		
 	}
 
 	@Override
@@ -190,10 +180,9 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	// Ju
-	public HashMap<LocalDate,Order> placeOrder(LocalDate date, Order order) {
+	private void placeOrder(Order order) {
 		// Add the data to in-memory storage
-		temporaryOrderStorage.put(date,order);
-		return temporaryOrderStorage;
+		temporaryOrderStorage.add(order);
 	}
 
 	@Override
@@ -296,30 +285,19 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public File saveOrdersToAFile(HashMap<LocalDate,Order> orderlist) {
-		
-		Entry<LocalDate, Order> entry = orderlist.entrySet().iterator().next();
-		 LocalDate key = entry.getKey();
-//		
-		
-		
-			
-		String fileName= "Orders_" + key.format(DateTimeFormatter.ofPattern("MMDDYYYY")) + ".txt";
+	public void saveOrdersToAFile() {
+
+		String fileName= "Orders_" + orderDate.format(DateTimeFormatter.ofPattern("MMDDYYYY")) + ".txt";
 		try {
-			
-			File f = new File(fileName);
-			f.createNewFile();
 			dataAccess.writeObject(orders,fileName);
-			return f;
-			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 		}
-		return null;
-		
-		}
+
 		// CODE ENDS - Don't delete
+
+	}
 
 	
 
@@ -335,12 +313,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	private int getHighestOrderNumber() {
 		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
 		return foTrackerDataAccess.readOrderNumberTracker();
-	}
-
-	@Override
-	public HashMap<LocalDate, Order> getUnsavedOrders() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	
