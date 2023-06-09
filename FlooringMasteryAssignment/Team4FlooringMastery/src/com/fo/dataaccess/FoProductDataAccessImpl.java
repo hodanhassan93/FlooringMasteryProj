@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class FoProductDataAccessImpl implements FoDataAccess {
 
 	@Override
-	public LinkedList<Product> readObject(String filename) throws Exception {
+	public LinkedList<Product> readObjects(String filename) throws Exception {
 		LinkedList<Product> products = new LinkedList<>();
 
 		try {
