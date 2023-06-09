@@ -1,13 +1,23 @@
 package com.fo.service;
 
 import static org.junit.jupiter.api.DynamicTest.stream;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import com.fo.dataaccess.*;
+
+import com.fo.dto.Order;
+import com.fo.dto.Product;
+import com.fo.dto.Tax;
+import com.fo.utility.EntryNotFoundException;
+
+public class FoBusinessLogicImpl implements FoBusinessLogic {
+	FoDataAccess foDataAccess = new FoDataAccessImpl();
+
 
 import com.fo.dataaccess.FoDataAccess;
 import com.fo.dataaccess.FoOrderDataAccessImpl;
@@ -55,8 +65,8 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		// CODE STARTS - Don't delete
 		return null;
 		// CODE ENDS - Don't delete
-
 	}
+
 
 	@Override
 	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType,
@@ -67,6 +77,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	}
 
+
 	@Override
 	public boolean checkName(String name) throws InvalidInputException {
 		// CODE STARTS - Don't delete
@@ -74,6 +85,32 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		// CODE ENDS - Don't delete
 
 	}
+
+	// private
+	// static LinkedList<Order> getOrders();
+
+	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException {
+
+		String fileName = "Order_" + date + ".txt";
+
+		File f = new File(fileName);
+
+		if (true) {
+
+			foDataAccess.readOrders(fileName);
+
+			return orders;
+		}
+
+		else {
+
+			throw new FileNotFoundException("File not found");
+
+		}
+
+	}
+
+	Order createOrder(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area);
 
 	@Override
 	public boolean StateAbbreviation(String stateAbbreviation) throws EntryNotFoundException {
@@ -117,6 +154,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	}
 
+
 	@Override
 	public boolean checkDate(String date) {
 		// CODE STARTS - Don't delete
@@ -147,6 +185,54 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		// CODE ENDS - Don't delete
 
 	}
+
+	public boolean checkProductType(String productType) throws EntryNotFoundException
+
+	{
+		LinkedList<Order> matches = new LinkedList<Order>();
+
+		for (Order order : orders) {
+
+			if (productType.toLowerCase().contains(order.getProductType().toLowerCase())) {
+				
+				matches.add(order);
+
+			}
+			
+			else if (matches.size() == 0) {
+				
+				throw new EntryNotFoundException("No product with the inserted type exists");
+			}
+		}
+		
+	
+
+	}
+
+	// private
+	// int getOrderNumber();
+
+	public Order getOrder(int orderNumber)
+	
+	{
+		LinkedList<Order> matches = new LinkedList<Order>();
+		
+		for (Order order : orders) {
+
+			if (order.getOrderNumber() == orderNumber) {
+				
+				matches.add(order);
+
+			}
+			
+			else if (matches.size() == 0) {
+				
+				throw new EntryNotFoundException("No product with the inserted type exists");
+			}
+		}
+		
+	
+		
 
 	@Override
 	public Order getOrder(int orderNumber) {
@@ -180,6 +266,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 			throw new NoOrdersFoundException("Order number " + order.getOrderNumber() + " not found.");
 		}
 		// CODE ENDS - Don't delete
+
 
 	}
 
@@ -219,4 +306,5 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	 * =============================================================================
 	 * ============
 	 */
+
 }
