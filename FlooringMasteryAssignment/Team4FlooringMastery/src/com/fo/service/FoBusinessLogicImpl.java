@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import com.fo.dataaccess.*;
@@ -86,7 +87,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
             return false;
         }
 
-        if (!name.matches("[a-zA-Z\\s]+")) {
+        if (!name.matches("[a-zA-Z\\s,]+")) {
             throw new InvalidInputException("Invalid characters in name: " + name);
         }
 
@@ -236,7 +237,14 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	@Override
 	public void saveOrdersToAFile() {
-		// CODE STARTS - Don't delete
+
+		String fileName= "Orders_" + orderDate.format(DateTimeFormatter.ofPattern("MMDDYYYY")) + ".txt";
+		try {
+			dataAccess.writeObject(orders,fileName);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 
 		// CODE ENDS - Don't delete
 
