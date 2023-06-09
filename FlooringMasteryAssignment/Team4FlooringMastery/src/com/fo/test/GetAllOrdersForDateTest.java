@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.stream.Stream;
 import com.fo.service.*;
@@ -44,18 +45,18 @@ class GetAllOrdersForDateTest {
 	
 	@Test
 	
-	 void test(String fileName) throws NoOrdersFoundException, IOException {
-
-
+	 void test() throws NoOrdersFoundException, IOException {
 		
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+		
+        LocalDate date = LocalDate.of(2013, 01, 06);
+        String formattedDate = date.format(dateTimeFormatter);
+        System.out.println(formattedDate);
 		FoOrderDataAccessImpl dao = new FoOrderDataAccessImpl();
 		FoBusinessLogicImpl fobusinessLogicImpl = new FoBusinessLogicImpl();
-		 boolean result = fobusinessLogicImpl.searchOrdersByDate(1);
-		    assertTrue(result);
+		 LinkedList<Order> result = fobusinessLogicImpl.getAllOrdersForDate(formattedDate);
+		 assertTrue(result.size() > 0);
 		
-		Path path = Paths.get(fileName);
-		
-//		File orderFile = new File(fileName);
 
 		
 

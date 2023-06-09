@@ -90,7 +90,7 @@ class CheckProductTypeTest {
 		
 	    
 		
-		LinkedList<Product> productsList = dao.readObject("Products");
+		LinkedList<Product> productsList = dao.readObjects("Products.txt");
 		
 		for(Product product:productsList) {
 			
