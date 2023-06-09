@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
+
 import com.fo.dataaccess.*;
 import com.fo.dto.Order;
 import com.fo.dto.Product;
@@ -78,8 +81,19 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType,
 			BigDecimal area) {
 		// CODE STARTS - Don't delete
-				return null;
-		// CODE ENDS - Don't delete
+		Optional<Tax> optional = taxes.stream()
+				.filter( (t) -> t.getStateAbbreviation().equals(state))
+				.findFirst();
+		Tax tax = optional.get();
+		
+		Optional<Product> optional2 = products.stream()
+				.filter( (p) -> p.getProductType().equals(productType))
+				.findFirst();
+		Product product = optional2.get();
+		
+		return calculateOrder(orderDate, getHighestOrderNumber(), customerName, tax, product, area);
+
+//		 CODE ENDS - Don't delete
 	}
 
 	@Override
@@ -128,7 +142,21 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	@Override
 	public boolean checkArea(String area) throws InvalidInputException {
 		// CODE STARTS - Don't delete
-		return false;
+		if (area.equals(""))
+			return false;
+		
+		try {
+			BigDecimal areaBigDecimal = new BigDecimal(area); 
+			
+			if (areaBigDecimal.compareTo(new BigDecimal("100")) != -1)
+				return true;
+			else
+				throw new InvalidInputException("wrong.");
+				
+		} catch(Exception ex) {
+			throw new InvalidInputException("wrong.");
+		}
+			
 		// CODE ENDS - Don't delete
 
 	}
@@ -219,7 +247,18 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	@Override
 	public LinkedList<Order> editOrder(int orderNumber, Order order) {
 		// CODE STARTS - Don't delete
-		return null;
+		LinkedList<Order> newOrders = this.orders;
+		int index = 0;
+		
+		for (Order anOrder : orders) {
+			if (anOrder.getOrderNumber() == orderNumber) {
+				index = newOrders.indexOf(anOrder);
+			}
+		}
+		
+		newOrders.set(index, order);
+				
+		return newOrders;
 		// CODE ENDS - Don't delete
 
 	}
@@ -263,6 +302,11 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		// CODE STARTS - Don't delete
 
 		// CODE ENDS - Don't delete
+	}
+	
+	private int getHighestOrderNumber() {
+		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
+		return foTrackerDataAccess.readOrderNumberTracker();
 	}
 
 	/*

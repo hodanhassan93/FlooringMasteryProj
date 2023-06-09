@@ -30,15 +30,3 @@ public class MainTest {
 	//	}
 
 //		System.out.println(orders.get(0));
-
-	//	try {
-//			dataAccess.writeObject(orders, "Orders_test.txt");
-//		} catch (Exception ex) {
-//			System.out.println(ex);
-//		}
-//
-////		System.out.println(products.get(1));
-//
-//	}
-//
-}}
