@@ -36,7 +36,7 @@ public interface FoBusinessLogic {
 
 	public boolean checkName(String name) throws InvalidInputException;
 
-	public boolean checkState(String state) throws EntryNotFoundException;
+	public boolean StateAbbreviation(String stateAbbreviation) throws InvalidInputException;
 
 	public boolean checkProductType(String productType) throws EntryNotFoundException;
 

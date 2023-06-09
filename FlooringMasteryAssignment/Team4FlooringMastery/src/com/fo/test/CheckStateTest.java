@@ -28,18 +28,18 @@ class CheckStateTest {
 	}
 
 	@Test // CheckState01 - returns true
-	void checkState() {
+	void checkStateAbbreviation() {
 		String stateCode = "TX";
-		boolean result = foBusinessLogic.checkState(stateCode);
+		boolean result = foBusinessLogic.checkStateAbbreviation(stateCode);
 		assertTrue(result);
 	}
 
-	@Test // CheckState02
-	void checkState() {
-		String stateName = "Texas";
-		boolean result = foBusinessLogic.checkState(stateName);
-		assertTrue(result);
-	}
+	// @Test // CheckState02 - we dont need this test
+//	void checkStateAbbreviation() {
+//		String stateName = "Texas";
+//		boolean result = foBusinessLogic.checkStateAbbreviation(stateName);
+//		assertTrue(result);
+//	}
 
 	@Test //CheckState03
 	void checkState("Kansas") throws InvalidInputException {

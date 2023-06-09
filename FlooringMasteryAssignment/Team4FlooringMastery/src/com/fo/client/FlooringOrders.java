@@ -2,8 +2,9 @@ package com.fo.client;
 
 import java.util.Scanner;
 
-import com.vm.ui.VmUserInterface;
-import com.vm.ui.VmUserInterfaceImpl;
+
+import com.fo.presentation.foUserInterface;
+import com.fo.presentation.foUserInterfaceImpl;
 
 public class FlooringOrders {
 
@@ -14,8 +15,12 @@ public class FlooringOrders {
 		while (true) {
 			foUserInterface.showMenu();
 			System.out.println("What would you like to do:");
-			int choice = scanner.nextDouble();
-			foUserInterface.performMenu(choice);
+			int choice = scanner.nextInt();
+			try {
+				foUserInterface.performMenu(choice);
+			} catch (Exception e) {
+				System.out.println("Please pick and option from the menu");
+			}
 		}
 	}
 
