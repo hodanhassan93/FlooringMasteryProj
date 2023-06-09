@@ -2,9 +2,10 @@ package com.fo.presentation;
 
 import com.fo.dto.Order;
 import com.fo.service.*;
-
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.Scanner;
 import com.fo.utility.InvalidDateException;
 import com.fo.utility.InvalidInputException;
@@ -24,7 +25,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 	}
 
 	@Override
-	public void performMenu(String choice) {
+	public void performMenu(String choice){
 		foBusinessLogic = new FoBusinessLogicImpl();
 		Scanner scanner = new Scanner(System.in);
 		switch (choice) {
@@ -36,8 +37,11 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 				
 				try {
 					if (foBusinessLogic.checkDate(dateString) == true) {
-						LocalDate date = LocalDate.parse(dateString);
-						foBusinessLogic.getAllOrdersForDate(date);
+						DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+						 LocalDate date = LocalDate.parse(dateString);
+						 String formattedDate = date.format(dateTimeFormatter);
+						
+						foBusinessLogic.getAllOrdersForDate(formattedDate);
 					} else {
 						System.out.println("You have entered an invalid date");
 					}
@@ -103,6 +107,38 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 		// 3 - EDIT EXISTING ORDER
 			case "3":
+				int year, month, day;
+				
+				System.out.println("Enter Year");
+				year = scanner.nextInt();
+				System.out.println("Enter Month");
+				month = scanner.nextInt();
+				System.out.println("Enter day");
+				day = scanner.nextInt();
+				LocalDate date = LocalDate.of(year, month, day);
+				DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+				String formattedDate = date.format(dateTimeFormatter);
+				LinkedList<Order> result = foBusinessLogic.getAllOrdersForDate(formattedDate);
+				System.out.println(result);
+		        String fileName = "Orders_"+formattedDate+".txt";
+		        System.out.println("Enter order Number");
+		        int orderNumber = scanner.nextInt();
+		        
+				Order retrievedorder = foBusinessLogic.getOrder(fileName, orderNumber);
+				
+		        
+				if (retrievedorder == null) {
+					
+					System.out.println("No order has been found");
+				}
+				
+				else {
+					
+					System.out.println(retrievedorder.toString());
+				}
+				
+		
+				
 	
 				break;
 

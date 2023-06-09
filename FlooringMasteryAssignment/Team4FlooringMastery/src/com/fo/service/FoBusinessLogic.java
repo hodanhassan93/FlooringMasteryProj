@@ -15,7 +15,7 @@ import java.util.LinkedList;
 
 public interface FoBusinessLogic {
 
-	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException;
+	public LinkedList<Order> getAllOrdersForDate(String date) throws FileNotFoundException;
 	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType, BigDecimal area);
 	public boolean checkName(String name) throws InvalidInputException;
 	public boolean StateAbbreviation(String stateAbbreviation) throws EntryNotFoundException;
@@ -23,7 +23,7 @@ public interface FoBusinessLogic {
 	public boolean checkArea(String area) throws InvalidInputException;
 	public boolean checkDate(String date) throws InvalidDateException;
 	public Order calculateOrder(LocalDate orderDate, int orderNumber, String customerName, Tax tax, Product product, BigDecimal area);
-	public Order getOrder(int orderNumber) throws Exception;
+	public Order getOrder(String fileName,int orderNumber) throws Exception;
 	public LinkedList<Order> editOrder(int orderNumber, Order order);
 	public void removeOrder(Order order) throws NoOrdersFoundException;
 	public void saveOrdersToAFile();
