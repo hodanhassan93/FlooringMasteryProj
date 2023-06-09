@@ -196,7 +196,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	public Order getOrder(String fileName, int orderNumber) throws Exception{
 	
 		
-	this.orders = dataAccess.readObjects(fileName);
+	 this.orders = dataAccess.readObjects(fileName);
 			
 			
 		
