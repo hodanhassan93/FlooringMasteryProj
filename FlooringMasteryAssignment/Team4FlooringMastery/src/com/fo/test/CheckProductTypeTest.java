@@ -18,7 +18,6 @@ import com.fo.dto.*;
 import com.fo.dataaccess.*;
 import com.fo.dto.Order;
 import com.fo.service.*;
-import com.fo.utility.EntryNotFoundException;
 
 
 class CheckProductTypeTest {
@@ -83,13 +82,13 @@ class CheckProductTypeTest {
 	
 	@Test
 	
-	void test() {
+	void test() throws Exception {
 		
 		FoBusinessLogic service;
 		
 		FoProductDataAccessImpl dao = new FoProductDataAccessImpl();
 		
-		LinkedList <Product> products = new LinkedList <Product>();
+	    
 		
 		LinkedList<Product> productsList = dao.readObject("Products");
 		

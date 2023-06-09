@@ -2,6 +2,8 @@ package com.fo.dataaccess;
 
 import java.util.LinkedList;
 import com.fo.dto.Order;
+import com.fo.dto.Product;
+
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
@@ -78,4 +80,5 @@ public class FoOrderDataAccessImpl implements FoDataAccess {
 		return true;
 
 	}
+
 }
