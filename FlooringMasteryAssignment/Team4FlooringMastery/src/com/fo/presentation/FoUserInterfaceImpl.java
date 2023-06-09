@@ -126,5 +126,26 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 				System.out.println("Invalid Choice. Please pick a menu item.");
 		}
 	}
-
+	
+	/* Switch case - option 2
+	 * 
+	// Show order summary
+//    System.out.println("Order Summary:");
+//    System.out.println("Order Date: " + order.getOrderDate());
+//    System.out.println("Customer Name: " + order.getCustomerName());
+//    System.out.println("State: " + order.getStateAbbreviation());
+//    System.out.println("Product Type: " + order.getProductType());
+//    System.out.println("Area: " + order.getArea());
+//    System.out.println("Tax: " + tax);
+//    System.out.println("Total Price: " + totalPrice);
+//	System.out.print("Place the order? (Y/N): ");
+//	String placeOrder = scanner.nextLine();
+//	
+//	if (placeOrder.equalsIgnoreCase("Y")) {
+ * //			System.out.println("Order placed successfully!");
+//		} else {
+//			System.out.println("Order not placed. Returning to the main menu.");
+//		}
+ * 
+	*/
 }
