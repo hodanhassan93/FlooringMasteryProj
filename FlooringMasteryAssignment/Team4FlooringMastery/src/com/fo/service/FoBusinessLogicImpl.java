@@ -9,9 +9,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.IntStream;
-
+import java.util.HashMap;
 import com.fo.dataaccess.*;
 import com.fo.dto.Order;
 import com.fo.dto.Product;
@@ -58,14 +60,13 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public LinkedList<Order> getAllOrdersForDate(String date) throws FileNotFoundException {
+	public LinkedList<Order> getAllOrdersForDate(String date){
 
 		String fileName = "Orders_" + date + ".txt";
 		
 		System.out.println(fileName);
 
-		File f = new File(fileName);
-
+		
 		try {
 			this.orders = dataAccess.readObjects(fileName);
 			return this.orders;
@@ -93,6 +94,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		
 		return calculateOrder(orderDate, getHighestOrderNumber(), customerName, tax, product, area);
 
+		
 //		 CODE ENDS - Don't delete
 	}
 
@@ -297,6 +299,10 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	}
 
+	
+
+
+
 	@Override
 	public void exportData() {
 		// CODE STARTS - Don't delete
@@ -308,7 +314,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
 		return foTrackerDataAccess.readOrderNumberTracker();
 	}
-
 
 	/*
 	 * =============================================================================
@@ -332,4 +337,4 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	 * ============
 	 */
 
-}
+
