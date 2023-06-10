@@ -315,10 +315,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		return foTrackerDataAccess.readOrderNumberTracker();
 	}
 
-	
-		
-	}
-
 	/*
 	 * =============================================================================
 	 * =============

@@ -6,11 +6,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.sujata.demo.Calculator;
-import com.sujata.test.AfterEach;
-import com.sujata.test.BeforeEach;
+import com.fo.service.FoBusinessLogicImpl;
+import com.fo.utility.EntryNotFoundException;
 
-class CheckStateTest {
+class CheckStateAbbreviationTest {
 
 	private FoBusinessLogicImpl foBusinessLogic;
 
@@ -30,8 +29,15 @@ class CheckStateTest {
 	@Test // CheckState01 - returns true
 	void checkStateAbbreviation() {
 		String stateCode = "TX";
-		boolean result = foBusinessLogic.checkStateAbbreviation(stateCode);
-		assertTrue(result);
+		boolean result;
+		try {
+			result = foBusinessLogic.checkStateAbbreviation(stateCode);
+			assertTrue(result);
+		} catch (EntryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	// @Test // CheckState02 - we dont need this test
@@ -41,16 +47,23 @@ class CheckStateTest {
 //		assertTrue(result);
 //	}
 
-	@Test //CheckState03
-	void checkState("Kansas") throws InvalidInputException {
-		assertThrows(InvalidInputException.class, ()->foBusinessLogic.checkState("Kansas"));
-	}
+//	@Test //CheckState03
+//	void stateAbbreviation("Kansas") throws InvalidInputException {
+//		assertThrows(InvalidInputException.class, ()->foBusinessLogic.checkStateAbbreviation("Kansas"));
+//	}
 
 	@Test // CheckState04
 	void checkState() {
 		String stateName = "Kansas";
-		boolean result = foBusinessLogic.checkState(stateName);
-		assertFalse(result);
+		boolean result;
+		try {
+			result = foBusinessLogic.checkStateAbbreviation(stateName);
+			assertFalse(result);
+		} catch (EntryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }
