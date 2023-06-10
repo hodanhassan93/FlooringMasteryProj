@@ -314,6 +314,8 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
 		return foTrackerDataAccess.readOrderNumberTracker();
 	}
+	
+}
 
 	/*
 	 * =============================================================================

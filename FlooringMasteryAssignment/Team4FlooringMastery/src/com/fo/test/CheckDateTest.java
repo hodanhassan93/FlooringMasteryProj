@@ -1,14 +1,7 @@
 package com.fo.test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.fo.service.*;
 import com.fo.utility.*;
@@ -21,7 +14,7 @@ class CheckDateTest {
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 		String futureDateString = "2023-12-31";
 
-		boolean result= false;
+		boolean result = false;
 		try {
 			result = businessLogic.checkDate(futureDateString);
 		} catch (InvalidDateException e) {
@@ -46,7 +39,7 @@ class CheckDateTest {
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 		String pastDateString = "2020-01-01";
 
-		boolean result=false;
+		boolean result = false;
 		try {
 			result = businessLogic.checkDate(pastDateString);
 		} catch (InvalidDateException e) {

@@ -1,10 +1,8 @@
 package com.fo.test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
