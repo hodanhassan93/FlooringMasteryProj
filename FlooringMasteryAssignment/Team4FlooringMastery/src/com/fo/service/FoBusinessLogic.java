@@ -10,6 +10,7 @@ import com.fo.utility.NoOrdersFoundException;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public interface FoBusinessLogic {
@@ -25,7 +26,9 @@ public interface FoBusinessLogic {
 	public Order getOrder(String fileName,int orderNumber) throws Exception;
 	public LinkedList<Order> editOrder(int orderNumber, Order order);
 	public void removeOrder(Order order) throws NoOrdersFoundException;
-	public void saveOrdersToAFile();
+	public void saveOrdersToAFile(HashMap<LocalDate, Order> toBeSaved);
+	public HashMap<LocalDate, Order> getUnsavedOrders();
+	public void placeOrder(LocalDate setDate, Order order);
 	
 	public void exportData(); // stretch goal
 	

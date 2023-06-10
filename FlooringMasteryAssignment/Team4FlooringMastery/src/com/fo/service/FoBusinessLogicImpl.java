@@ -144,10 +144,13 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		}
 	}
 
-	private void placeOrder(Order order) {
-		// Add the data to in-memory storage
-		temporaryOrderStorage.add(order);
-	}
+	@Override
+    public void placeOrder(LocalDate orderDate, Order order) {
+		temporaryOrderStorage = new LinkedList<>();
+		order.setOrderDate(orderDate);
+        temporaryOrderStorage.add(order);
+    }
+
 
 	@Override
 	public Order calculateOrder(LocalDate orderDate, int orderNumber, String customerName, Tax tax, Product product,
