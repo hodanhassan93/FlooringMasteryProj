@@ -1,8 +1,6 @@
 package com.fo.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-
 
 public class Order {
 	private int orderNumber;
@@ -17,10 +15,10 @@ public class Order {
 	private BigDecimal laborCost;
 	private BigDecimal tax;
 	private BigDecimal total;
-	
 
-	public Order(int orderNumber, String customerName, String state, BigDecimal taxRate, String productType, 
-			BigDecimal area,BigDecimal costPerSquareFoot, BigDecimal laborCostperSquareFoot, BigDecimal materialCost, BigDecimal laborCost, BigDecimal tax, BigDecimal total) {
+	public Order(int orderNumber, String customerName, String state, BigDecimal taxRate, String productType,
+			BigDecimal area, BigDecimal costPerSquareFoot, BigDecimal laborCostperSquareFoot, BigDecimal materialCost,
+			BigDecimal laborCost, BigDecimal tax, BigDecimal total) {
 		super();
 		this.orderNumber = orderNumber;
 		this.customerName = customerName;
@@ -52,7 +50,6 @@ public class Order {
 		this.area = area;
 	}
 
-	
 	public int getOrderNumber() {
 		return orderNumber;
 	}
@@ -141,5 +138,3 @@ public class Order {
 				+ materialCost + ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + "]";
 	}
 }
-
-
