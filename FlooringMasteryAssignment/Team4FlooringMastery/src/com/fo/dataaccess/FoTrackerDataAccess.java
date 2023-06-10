@@ -30,7 +30,7 @@ public class FoTrackerDataAccess {
 			trackerFile.createNewFile();
 			FileWriter fileWriter = new FileWriter(trackerFile);
 			PrintWriter printWriter = new PrintWriter(fileWriter, false);
-			
+
 			printWriter.println(currentHighestOrder + 1);
 		} catch (IOException ex) {
 		}

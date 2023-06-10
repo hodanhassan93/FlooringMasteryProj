@@ -1,6 +1,7 @@
 package com.fo.dataaccess;
 
 import java.util.LinkedList;
+
 import java.io.FileReader;
 import java.math.BigDecimal;
 import com.fo.dto.*;
@@ -26,7 +27,7 @@ public class FoProductDataAccessImpl implements FoDataAccess {
 				String[] values = currentLine.split(",");
 
 				Product value = new Product(values[0], new BigDecimal(values[1]), new BigDecimal(values[2]));
-				
+
 				products.add(value);
 			}
 

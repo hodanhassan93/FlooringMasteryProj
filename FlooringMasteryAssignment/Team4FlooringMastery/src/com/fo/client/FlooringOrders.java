@@ -1,10 +1,8 @@
 package com.fo.client;
 
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 import com.fo.presentation.FoUserInterface;
 import com.fo.presentation.FoUserInterfaceImpl;
-import com.fo.utility.NoOrdersFoundException;
 
 public class FlooringOrders {
 

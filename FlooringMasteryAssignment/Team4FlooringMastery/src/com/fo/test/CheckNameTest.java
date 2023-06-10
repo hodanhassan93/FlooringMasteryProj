@@ -1,12 +1,7 @@
 package com.fo.test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.fo.service.*;
 import com.fo.utility.InvalidInputException;
@@ -18,7 +13,7 @@ class CheckNameTest {
 
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 
-		boolean result=false;
+		boolean result = false;
 		try {
 			result = businessLogic.checkName("John, Doe");
 		} catch (InvalidInputException e) {
@@ -41,7 +36,7 @@ class CheckNameTest {
 
 		FoBusinessLogicImpl businessLogic = new FoBusinessLogicImpl();
 
-		boolean result=false;
+		boolean result = false;
 		try {
 			result = businessLogic.checkName("");
 		} catch (InvalidInputException e) {

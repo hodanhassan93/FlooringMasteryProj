@@ -2,12 +2,10 @@ package com.fo.test;
 
 import com.fo.dataaccess.FoProductDataAccessImpl;
 import com.fo.dto.Product;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.LinkedList;

@@ -26,7 +26,6 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 		System.out.println("4. Remove an Order");
 		System.out.println("5. Export All data");
 		System.out.println("6. Quit");
-
 	}
 
 	@Override
@@ -41,15 +40,13 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			String dateString = scanner.nextLine();
 
 			try {
-				if (foBusinessLogic.checkDate(dateString) == true || foBusinessLogic.checkDate(dateString) == false ) {
+				if (foBusinessLogic.checkDate(dateString) == true || foBusinessLogic.checkDate(dateString) == false) {
 					DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
 					LocalDate date = LocalDate.parse(dateString);
 					String formattedDate = date.format(dateTimeFormatter);
 
-				System.out.println(	foBusinessLogic.getAllOrdersForDate(formattedDate));
-					
-					
-					
+					System.out.println(foBusinessLogic.getAllOrdersForDate(formattedDate));
+
 				} else {
 					System.out.println("You have entered an invalid date");
 				}
@@ -68,7 +65,6 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			do {
 				System.out.println("Enter order date (YYYY-MM-DD):");
 				date = scanner.nextLine();
-				
 
 				try {
 					test = foBusinessLogic.checkDate(date);
@@ -103,7 +99,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 				state = scanner.nextLine();
 
 				try {
-					test = foBusinessLogic.StateAbbreviation(state);
+					test = foBusinessLogic.checkStateAbbreviation(state);
 				} catch (EntryNotFoundException ex) {
 					System.out.println("The state you entered is invalid.\n");
 				}
@@ -144,11 +140,10 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 				if (test == false)
 					System.out.println("Area cannot be blank.\n");
 			} while (test == false);
-			
+
 			LocalDate setDate = LocalDate.parse(date);
 
-			Order order = foBusinessLogic.createOrder(setDate, name, state, product,
-					new BigDecimal(area));
+			Order order = foBusinessLogic.createOrder(setDate, name, state, product, new BigDecimal(area));
 
 			System.out.println("\nHere is your order summary:");
 
@@ -165,8 +160,8 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			String placeOrder = scanner.nextLine();
 
 			if (placeOrder.equalsIgnoreCase("Y")) {
-				
-				foBusinessLogic.placeOrder(setDate,order);
+
+				foBusinessLogic.placeOrder(setDate, order);
 				System.out.println("Order placed successfully!");
 			} else {
 				System.out.println("Order not placed. Returning to the main menu.");
@@ -221,7 +216,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 			break;
 
-		// 4 - REMOVE ORDER - Ju
+		// 4 - REMOVE ORDER
 		case "4":
 			System.out.println("Enter order date (YYYY-MM-DD):");
 			String dateToCheck = scanner.nextLine();
@@ -230,11 +225,9 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 			try {
 				foBusinessLogic.checkDate(dateToCheck);
-
 			} catch (Exception InvalidDate) {
-
+				
 				System.out.println("You have entered an invalid date");
-
 				break;
 			}
 
@@ -254,10 +247,8 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 					System.out.println("Order successfully removed.");
 				}
 			} catch (NoOrdersFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -265,10 +256,10 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 		// 5 - SAVE ORDER TO A FILE
 		case "5":
-		
-		     HashMap<LocalDate,Order> toBeSaved = foBusinessLogic.getUnsavedOrders();
-		     foBusinessLogic.saveOrdersToAFile(toBeSaved);
-		 	System.out.println(toBeSaved.size());
+
+			HashMap<LocalDate, Order> toBeSaved = foBusinessLogic.getUnsavedOrders();
+			foBusinessLogic.saveOrdersToAFile(toBeSaved);
+			System.out.println(toBeSaved.size());
 			System.out.println("Your data has been stored");
 			break;
 
@@ -282,21 +273,4 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			System.out.println("Invalid Choice. Please pick a menu item.");
 		}
 	}
-
-	/*
-	 * Switch case - option 2
-	 * 
-	 * // Show order summary // System.out.println("Order Summary:"); //
-	 * System.out.println("Order Date: " + order.getOrderDate()); //
-	 * System.out.println("Customer Name: " + order.getCustomerName()); //
-	 * System.out.println("State: " + order.getStateAbbreviation()); //
-	 * System.out.println("Product Type: " + order.getProductType()); //
-	 * System.out.println("Area: " + order.getArea()); // System.out.println("Tax: "
-	 * + tax); // System.out.println("Total Price: " + totalPrice); //
-	 * System.out.print("Place the order? (Y/N): "); // String placeOrder =
-	 * scanner.nextLine(); // // if (placeOrder.equalsIgnoreCase("Y")) { //
-	 * System.out.println("Order placed successfully!"); // } else { //
-	 * System.out.println("Order not placed. Returning to the main menu."); // }
-	 * 
-	 */
 }

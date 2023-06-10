@@ -1,9 +1,8 @@
 package com.fo.dataaccess;
 
 import java.util.LinkedList;
-import com.fo.dto.Order;
-import com.fo.dto.Product;
 
+import com.fo.dto.Order;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,17 +12,17 @@ import java.io.BufferedReader;
 import java.util.Scanner;
 
 public class FoOrderDataAccessImpl implements FoDataAccess {
-	
+
 	@Override
 	public LinkedList<Order> readObjects(String FileName) throws Exception {
 		LinkedList<Order> orders = new LinkedList<Order>();
-		
+
 		FileReader fileReader = new FileReader(FileName);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		Scanner scanner = new Scanner(bufferedReader);
-		
+
 		scanner.nextLine();
-		
+
 		while (scanner.hasNext()) {
 			String currentLine = scanner.nextLine();
 
@@ -43,7 +42,7 @@ public class FoOrderDataAccessImpl implements FoDataAccess {
 		} catch (Exception ex) {
 			throw ex;
 		}
-
+		
 		return orders;
 	}
 
@@ -55,9 +54,10 @@ public class FoOrderDataAccessImpl implements FoDataAccess {
 		} catch (IOException e) {
 			throw e;
 		}
-		
+
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		printWriter.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
+		printWriter.println(
+				"OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
 
 		for (Order order : orders) {
 			String ordStr = order.getOrderNumber() + "," + order.getCustomerName() + "," + order.getState() + ","
@@ -78,7 +78,6 @@ public class FoOrderDataAccessImpl implements FoDataAccess {
 			throw e;
 		}
 		return true;
-
 	}
 
 }
