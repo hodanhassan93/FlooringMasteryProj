@@ -28,23 +28,17 @@ class CreateOrderTest {
 
 	@Test
 	void createOrderTest01() {
-		Order order = service.createOrder(LocalDate.of(2099, 12, 30), "Jack Brown", "Texas", "Carpet",
-				new BigDecimal("150"));
-
-		Tax texasTax = new Tax();
-		texasTax.setStateAbbreviation("TX");
-		texasTax.setStateName("Texas");
-		texasTax.setTaxRate(new BigDecimal("4.45"));
-
-		Product product = new Product();
-		product.setCostPerSquareFoot(new BigDecimal("2.25"));
-		product.setLaborCostPerSquareFoot(new BigDecimal("2.10"));
-		product.setProductType("Carpet");
-
-		Order testOrder = new Order(LocalDate.of(2099, 12, 30), 1, "Jack Brown", texasTax, product,
-				new BigDecimal("150"), new BigDecimal("337.5"), new BigDecimal("315"), new BigDecimal("2903.62"),
-				new BigDecimal("3556.12"));
-
+		Order order = service.createOrder(1,LocalDate.of(2099, 12, 30), "Jack Brown", "Tx", "Carpet", new BigDecimal("150"));
+		
+		Tax texasTax = new Tax("TX","Texas",new BigDecimal("4.45"));
+		
+		Product product = new Product("Carpet", new BigDecimal("2.25"), new BigDecimal("2.10"));
+		
+		Order testOrder = new Order(1, "Jack Brown", "TX", new BigDecimal("4.45"), "Carpet", new BigDecimal("150"), new BigDecimal("2.25"), new BigDecimal("2.10"),new BigDecimal("337.5"), new BigDecimal("315"), new BigDecimal("2903.62"), new BigDecimal("3556.12"));
+		
+		System.out.println(testOrder);
+		System.out.println(order);
+		
 		assertEquals(true, order.equals(testOrder));
 	}
 

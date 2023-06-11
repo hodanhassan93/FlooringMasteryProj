@@ -26,7 +26,7 @@ class CheckStateAbbreviationTest {
 
 	@Test // CheckState01 - returns true
 	void checkStateAbb1() {
-		String stateCode = "TX";
+		String stateCode = "ca";
 		boolean result;
 		try {
 			result = foBusinessLogic.checkStateAbbreviation(stateCode);

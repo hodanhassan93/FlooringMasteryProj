@@ -29,8 +29,9 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	private LinkedList<Product> products;
 	private LinkedList<Tax> taxes;
 	private LinkedList<Order> temporaryOrderStorage;
-	private LinkedList<Order> orders;
-	private LocalDate orderDate;
+	private static LinkedList<Order> orders;
+	private static LocalDate orderDate;
+	private static int currentHighestNumber;
 
 	public FoBusinessLogicImpl() {
 		this.dataAccess = new FoOrderDataAccessImpl();
@@ -49,20 +50,29 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 			System.out.println("Fatal error: unhandled error occured. We apologise for any inconvinience caused.");
 			System.exit(0);
 		}
+		
+		if (currentHighestNumber == 0)
+			currentHighestNumber = getHighestOrderNumber();
 	}
 
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	private void setOrderDate(LocalDate date) {
+		orderDate = date;
+	}
+	
 	@Override
-	public LinkedList<Order> getAllOrdersForDate(String date) {
-
-		String fileName = "Orders_" + date + ".txt";
-
-		System.out.println(fileName);
+	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException {
+		setOrderDate(date);
+		String fileName = "Orders_" + date.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
 
 		try {
 			this.orders = dataAccess.readObjects(fileName);
 			return this.orders;
 		} catch (FileNotFoundException ex) {
-			throw new FileNotFoundException("File not found.");
+			throw new FileNotFoundException("");
 		} catch (Exception ex) {
 		}
 
@@ -70,18 +80,32 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public Order createOrder(LocalDate orderDate, String customerName, String state, String productType,
+	public Order createOrder(LocalDate date, String customerName, String state, String productType,
 			BigDecimal area) {
-		Optional<Tax> optional = taxes.stream().filter((t) -> t.getStateAbbreviation().equals(state)).findFirst();
+		Optional<Tax> optional = taxes.stream().filter((t) -> t.getStateAbbreviation().equalsIgnoreCase(state)).findFirst();
 		Tax tax = optional.get();
 
-		Optional<Product> optional2 = products.stream().filter((p) -> p.getProductType().equals(productType))
+		Optional<Product> optional2 = products.stream().filter((p) -> p.getProductType().equalsIgnoreCase(productType))
 				.findFirst();
 		Product product = optional2.get();
 
-		return calculateOrder(orderDate, getHighestOrderNumber(), customerName, tax, product, area);
+		return calculateOrder(date, currentHighestNumber, customerName, tax, product, area);
 	}
 
+	public Order createOrder(int orderNumber, LocalDate date, String customerName, String state, String productType, BigDecimal area) {
+		// CODE STARTS - Don't delete
+		Optional<Tax> optional = taxes.stream().filter((t) -> t.getStateAbbreviation().equalsIgnoreCase(state)).findFirst();
+		Tax tax = optional.get();
+
+		Optional<Product> optional2 = products.stream().filter((p) -> p.getProductType().equalsIgnoreCase(productType))
+				.findFirst();
+		Product product = optional2.get();
+
+		return calculateOrder(date, orderNumber, customerName, tax, product, area);
+
+//		 CODE ENDS - Don't delete
+	}
+	
 	@Override
 	public boolean checkName(String name) throws InvalidInputException {
 		if (name == null || name.isEmpty()) {
@@ -106,7 +130,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		}
 
 		for (String state : statesAbbreviationList) {
-			if (state.equals(stateAbbreviation)) {
+			if (state.equalsIgnoreCase(stateAbbreviation)) {
 				return true;
 			}
 		}
@@ -125,10 +149,10 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 			if (areaBigDecimal.compareTo(new BigDecimal("100")) != -1)
 				return true;
 			else
-				throw new InvalidInputException("wrong.");
+				throw new InvalidInputException("");
 
 		} catch (Exception ex) {
-			throw new InvalidInputException("wrong.");
+			throw new InvalidInputException("");
 		}
 	}
 
@@ -145,10 +169,23 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-    public void placeOrder(LocalDate orderDate, Order order) {
-		temporaryOrderStorage = new LinkedList<>();
-		order.setOrderDate(orderDate);
-        temporaryOrderStorage.add(order);
+    public void placeOrder(Order order, LocalDate orderDate) {
+		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
+		if (orders != null) {
+			this.orders.add(order);
+			currentHighestNumber = currentHighestNumber + 1;
+		} else {
+			try {
+				getAllOrdersForDate(orderDate);
+				this.orders.add(order);
+				currentHighestNumber = currentHighestNumber + 1;
+			} catch (FileNotFoundException ex) {
+				orders = new LinkedList<>();
+				this.orders.add(order);
+				setOrderDate(orderDate);
+				currentHighestNumber = currentHighestNumber + 1;
+			}
+		}
     }
 
 
@@ -169,31 +206,51 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	@Override
 	public boolean checkProductType(String productType) throws EntryNotFoundException {
-
 		LinkedList<Product> matches = new LinkedList<Product>();
+
+//		for (Product product : products) {
+//			if (productType.toLowerCase().contains(product.getProductType().toLowerCase())) {
+//				matches.add(product);
+//			} else if (matches.size() == 0) {
+//				throw new EntryNotFoundException("No product with the inserted type exists");
+//			}
+//		}
+//		return true;
+		
+		if (productType.equals(""))
+			return false;
 
 		for (Product product : products) {
 			if (productType.toLowerCase().contains(product.getProductType().toLowerCase())) {
 				matches.add(product);
-			} else if (matches.size() == 0) {
-				throw new EntryNotFoundException("No product with the inserted type exists");
 			}
+		}
+		
+		if (matches.size() == 0) {
+			throw new EntryNotFoundException("");
 		}
 		return true;
 	}
 
 	@Override
-	public Order getOrder(String fileName, int orderNumber) throws Exception {
+	public Order getOrder(LocalDate date, int orderNumber) throws FileNotFoundException {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
+		String fileName = "Orders_" + date.format(formatter) + ".txt";
 
-		this.orders = dataAccess.readObjects(fileName);
+		try {
+			LinkedList<Order> orders = dataAccess.readObjects(fileName);
 
-		for (Order order : orders) {
-			if (order.getOrderNumber() == orderNumber) {
-				return order;
-			} else {
-				return null;
+			for (Order anOrder : orders) {
+				if (anOrder.getOrderNumber() == orderNumber) {
+					return anOrder;
+				}
 			}
+		} catch (FileNotFoundException ex) {
+			throw new FileNotFoundException("");
+		} catch (Exception ex) {
+			throw new FileNotFoundException("");
 		}
+
 		return null;
 	}
 
@@ -213,7 +270,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	@Override
 	public void removeOrder(Order order) throws NoOrdersFoundException {
-
 		boolean status = false;
 		for (Order currentOrder : orders) {
 			if (currentOrder.getOrderNumber() == order.getOrderNumber()) {
@@ -227,27 +283,32 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public void saveOrdersToAFile() {
-
-		String fileName = "Orders_" + orderDate.format(DateTimeFormatter.ofPattern("MMDDYYYY")) + ".txt";
+	public void saveOrdersToAFile() throws NoOrdersFoundException {
+		if (orders == null) {
+			throw new NoOrdersFoundException("");
+		} else {
 		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
+			String fileName = "Orders_" + orderDate.format(formatter) + ".txt";
 			dataAccess.writeObject(orders, fileName);
+			FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
+			foTrackerDataAccess.writeOrderNumberTracker(currentHighestNumber);
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
-	}
-
-	@Override // stretch goal
-	public void exportData() {
-		// CODE STARTS - Don't delete
-
-		// CODE ENDS - Don't delete
+		}
 	}
 
 	private int getHighestOrderNumber() {
 		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
 		return foTrackerDataAccess.readOrderNumberTracker();
+	}
+	
+	@Override // stretch goal
+	public void exportData() {
+		// CODE STARTS - Don't delete
+
+		// CODE ENDS - Don't delete
 	}
 
 }
