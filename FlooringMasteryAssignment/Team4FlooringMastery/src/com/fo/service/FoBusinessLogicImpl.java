@@ -68,8 +68,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		setOrderDate(date);
 		String fileName = "Orders_" + date.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
 
-		System.out.println(fileName);
-
 		try {
 			this.orders = dataAccess.readObjects(fileName);
 			return this.orders;
@@ -132,7 +130,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		}
 
 		for (String state : statesAbbreviationList) {
-			if (state.equals(stateAbbreviation)) {
+			if (state.equalsIgnoreCase(stateAbbreviation)) {
 				return true;
 			}
 		}

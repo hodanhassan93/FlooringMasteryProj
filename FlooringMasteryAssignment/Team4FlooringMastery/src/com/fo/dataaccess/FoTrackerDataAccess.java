@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class FoTrackerDataAccess {
 
 	public int readOrderNumberTracker() {
-		int highestOrderNumber = 1;
+		int highestOrderNumber = 0;
 		try {
 			FileReader fileReader = new FileReader("OrderNumberTracker");
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -29,10 +29,14 @@ public class FoTrackerDataAccess {
 			File trackerFile = new File("OrderNumberTracker");
 			trackerFile.createNewFile();
 			FileWriter fileWriter = new FileWriter(trackerFile);
-			PrintWriter printWriter = new PrintWriter(fileWriter, false);
-
-			printWriter.println(currentHighestOrder + 1);
+			PrintWriter printWriter = new PrintWriter(fileWriter);
+			
+			printWriter.println(currentHighestOrder);
+			
+			printWriter.flush();
+			printWriter.close();
 		} catch (IOException ex) {
+			System.out.println("error writeOrderNumberTracker");
 		}
 
 	}
