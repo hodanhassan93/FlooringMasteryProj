@@ -4,6 +4,7 @@ import com.fo.dto.Order;
 import com.fo.service.*;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -16,16 +17,18 @@ import com.fo.utility.InvalidInputException;
 import com.fo.utility.NoOrdersFoundException;
 
 public class FoUserInterfaceImpl implements FoUserInterface {
-	private FoBusinessLogic foBusinessLogic;
+	private FoBusinessLogicImpl foBusinessLogic;
 
 	@Override
 	public void showMenu() {
-		System.out.println("1. Display Orders");
-		System.out.println("2. Add an Order");
-		System.out.println("3. Edit an Order");
-		System.out.println("4. Remove an Order");
-		System.out.println("5. Export All data");
-		System.out.println("6. Quit");
+		System.out.println("------------------------------------");
+		System.out.println("\t1. Display Orders");
+		System.out.println("\t2. Add an Order");
+		System.out.println("\t3. Edit an Order");
+		System.out.println("\t4. Remove an Order");
+		System.out.println("\t5. Export data");
+		System.out.println("\t6. Quit");
+		System.out.println("------------------------------------");
 	}
 
 	@Override
@@ -40,16 +43,9 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			String dateString = scanner.nextLine();
 
 			try {
-				if (foBusinessLogic.checkDate(dateString) == true || foBusinessLogic.checkDate(dateString) == false) {
-					DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-					LocalDate date = LocalDate.parse(dateString);
-					String formattedDate = date.format(dateTimeFormatter);
-
-					System.out.println(foBusinessLogic.getAllOrdersForDate(formattedDate));
-
-				} else {
-					System.out.println("You have entered an invalid date");
-				}
+				foBusinessLogic.checkDate(dateString);
+				LocalDate date = LocalDate.parse(dateString);
+				System.out.println(foBusinessLogic.getAllOrdersForDate(date));
 			} catch (InvalidDateException ex) {
 				System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.");
 			} catch (FileNotFoundException ex) {
@@ -70,10 +66,11 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 					test = foBusinessLogic.checkDate(date);
 				} catch (InvalidDateException ex) {
 					System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.\n");
+					continue;
 				}
 
 				if (test == false)
-					System.out.println("Please provide a future date.\n");
+					System.out.println("Invalid input. Please provide a future date.\n");
 			} while (test == false);
 
 			test = false;
@@ -86,6 +83,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 					test = foBusinessLogic.checkName(name);
 				} catch (InvalidInputException ex) {
 					System.out.println("Invalid input. Name can only contain numbers, letters, commas and periods.\n");
+					continue;
 				}
 
 				if (test == false)
@@ -102,6 +100,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 					test = foBusinessLogic.checkStateAbbreviation(state);
 				} catch (EntryNotFoundException ex) {
 					System.out.println("The state you entered is invalid.\n");
+					continue;
 				}
 
 				if (test == false)
@@ -119,6 +118,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 					test = foBusinessLogic.checkProductType(product);
 				} catch (EntryNotFoundException ex) {
 					System.out.println("Invalid input. Please choose one of the options above.\n");
+					continue;
 				}
 
 				if (test == false)
@@ -135,6 +135,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 					test = foBusinessLogic.checkArea(area);
 				} catch (InvalidInputException ex) {
 					System.out.println("Invalid input. Area must be a positive integer larger than 100.\n");
+					continue;
 				}
 
 				if (test == false)
@@ -147,120 +148,206 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 			System.out.println("\nHere is your order summary:");
 
-			System.out.println("Order Date: " + setDate);
-			System.out.println("Customer Name: " + order.getCustomerName());
-			System.out.println("State: " + order.getState());
-			System.out.println("Product Type: " + order.getProductType());
-			System.out.println("Area: " + order.getArea());
-			System.out.println("Material cost: " + order.getMaterialCost());
-			System.out.println("Labor cost: " + order.getLaborCost());
-			System.out.println("Tax: " + order.getTax());
-			System.out.println("Total Price: " + order.getTotal());
-			System.out.println("Place the order? (Y/N):");
-			String placeOrder = scanner.nextLine();
+			System.out.println("=============================");
+			System.out.println("Order Date: \t" + setDate);
+			System.out.println("Customer Name: \t" + order.getCustomerName());
+			System.out.println("State: \t\t" + order.getState());
+			System.out.println("Product Type: \t" + order.getProductType());
+			System.out.println("Area: \t\t" + order.getArea() + " sq feet");
+			System.out.println("Material cost: \t" + order.getMaterialCost().setScale(2, RoundingMode.HALF_UP));
+			System.out.println("Labor cost: \t" + order.getLaborCost().setScale(2, RoundingMode.HALF_UP));
+			System.out.println("Tax: \t\t" + order.getTax().setScale(2, RoundingMode.HALF_UP));
+			System.out.println("Total Price: \t" + order.getTotal());
+			System.out.println("=============================");
 
-			if (placeOrder.equalsIgnoreCase("Y")) {
+			System.out.println("\nPlace the order? (Y/N):");
+			String placeOrderAnswer = scanner.nextLine();
 
-				foBusinessLogic.placeOrder(setDate, order);
-				System.out.println("Order placed successfully!");
+			if (placeOrderAnswer.equalsIgnoreCase("Y")) {
+				foBusinessLogic.placeOrder(order, setDate);
+				System.out.println("Order data saved. Don't forget to export data before quitting.");
 			} else {
 				System.out.println("Order not placed. Returning to the main menu.");
 			}
 
 			break;
 
+
 		// 3 - EDIT EXISTING ORDER
 		case "3":
-			int year, month, day;
+			String dateToEditString;
+			test = false;
 
-			System.out.println("Enter Year");
-			year = scanner.nextInt();
-			System.out.println("Enter Month");
-			month = scanner.nextInt();
-			System.out.println("Enter day");
-			day = scanner.nextInt();
-			LocalDate date2 = LocalDate.of(year, month, day);
-			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMddyyyy");
-			String formattedDate = date2.format(dateTimeFormatter);
-			LinkedList<Order> result;
+			do {
+				System.out.println("Enter the order's date(YYYY-MM-DD):");
+				dateToEditString = scanner.nextLine();
 
+				try {
+					foBusinessLogic.checkDate(dateToEditString);
+					test = true;
+				} catch (InvalidDateException ex) {
+					System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.\n");
+					continue;
+				}
+			} while (test == false);
+
+			System.out.println("Enter the order number:");
+			String orderNumberToEdit = scanner.nextLine();
+
+			Order orderToEdit;
 			try {
-				result = foBusinessLogic.getAllOrdersForDate(formattedDate);
-				System.out.println(result);
+				orderToEdit = foBusinessLogic.getOrder(LocalDate.parse(dateToEditString),
+						Integer.parseInt(orderNumberToEdit));
+				foBusinessLogic.getAllOrdersForDate(LocalDate.parse(dateToEditString));
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("No orders match date and order number. Returning to menu.");
+				break;
+			} catch (NumberFormatException ex) {
+				System.out.println("Order number does not exist. Returning to menu.");
+				break;
 			}
 
-			String fileName = "Orders_" + formattedDate + ".txt";
-			System.out.println("Enter order Number");
-			int orderNumber = scanner.nextInt();
+			if (orderToEdit == null) {
+				System.out.println("No orders match date and order number. Returning to menu.");
+				break;
+			}
 
-			Order retrievedorder;
-			try {
-				retrievedorder = foBusinessLogic.getOrder(fileName, orderNumber);
-				if (retrievedorder == null) {
-
-					System.out.println("No order has been found");
+//			Edit name
+			test = false;
+			do {
+				System.out.println("Enter customer name (" + orderToEdit.getCustomerName() + "):");
+				name = scanner.nextLine();
+				try {
+					if (foBusinessLogic.checkName(name))
+						orderToEdit.setCustomerName(name);
+					test = true;
+				} catch (InvalidInputException ex) {
+					System.out.println("Invalid input. Name can only contain numbers, letters, commas and periods.\n");
+					continue;
 				}
+			} while (test == false);
 
-				else {
-
-					System.out.println(retrievedorder.toString());
+//			Edit state
+			test = false;
+			do {
+				System.out.println("Enter state abbreviation (" + orderToEdit.getState() + "):");
+				state = scanner.nextLine();
+				try {
+					if (foBusinessLogic.checkStateAbbreviation(state))
+						orderToEdit.setState(state);
+					test = true;
+				} catch (EntryNotFoundException ex) {
+					System.out.println("The state you entered is invalid.\n");
+					continue;
 				}
+			} while (test == false);
 
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+//			Edit product
+			test = false;
+			do {
+				System.out.println("Enter product (" + orderToEdit.getProductType() + "):");
+				product = scanner.nextLine();
+				try {
+					if (foBusinessLogic.checkProductType(product))
+						orderToEdit.setProductType(product);
+					test = true;
+				} catch (EntryNotFoundException ex) {
+					System.out.println("Invalid input. Please choose one of the options above.\n");
+					continue;
+				}
+			} while (test == false);
+
+//			Edit area
+			test = false;
+			do {
+				System.out.println("Enter area (" + orderToEdit.getArea() + "):");
+				area = scanner.nextLine();
+				try {
+					if (foBusinessLogic.checkArea(area))
+						orderToEdit.setArea(new BigDecimal(area));
+					test = true;
+				} catch (InvalidInputException ex) {
+					System.out.println("Invalid input. Area must be a positive integer larger than 100.\n");
+					continue;
+				}
+			} while (test == false);
+
+			orderToEdit = foBusinessLogic.createOrder(orderToEdit.getOrderNumber(), LocalDate.parse(dateToEditString), orderToEdit.getCustomerName(),
+					orderToEdit.getState(), orderToEdit.getProductType(), orderToEdit.getArea());
+
+			System.out.println("\nHere is your order summary:");
+
+			System.out.println("=============================");
+			System.out.println("Order Date: \t" + dateToEditString);
+			System.out.println("Customer Name: \t" + orderToEdit.getCustomerName());
+			System.out.println("State: \t\t" + orderToEdit.getState());
+			System.out.println("Product Type: \t" + orderToEdit.getProductType());
+			System.out.println("Area: \t\t" + orderToEdit.getArea() + " sq feet");
+			System.out.println("Material cost: \t" + orderToEdit.getMaterialCost().setScale(2, RoundingMode.HALF_UP));
+			System.out.println("Labor cost: \t" + orderToEdit.getLaborCost().setScale(2, RoundingMode.HALF_UP));
+			System.out.println("Tax: \t\t" + orderToEdit.getTax().setScale(2, RoundingMode.HALF_UP));
+			System.out.println("Total Price: \t" + orderToEdit.getTotal());
+			System.out.println("=============================");
+
+			System.out.println("\nSave changes? (Y/N):");
+			placeOrderAnswer = scanner.nextLine();
+
+			if (placeOrderAnswer.equalsIgnoreCase("Y")) {
+				foBusinessLogic.editOrder(orderToEdit.getOrderNumber(), orderToEdit);
+//				foBusinessLogic.saveOrdersToAFile();
+				System.out.println("Changes saved. Don't forget to export data before quitting.");
+			} else {
+				System.out.println("Changes were not saved. Returning to the main menu.");
 			}
 
 			break;
 
 		// 4 - REMOVE ORDER
 		case "4":
-			System.out.println("Enter order date (YYYY-MM-DD):");
-			String dateToCheck = scanner.nextLine();
-			System.out.println("Enter the order number that you want to remove:");
-			int orderToCheck = scanner.nextInt();
-
-			try {
-				foBusinessLogic.checkDate(dateToCheck);
-			} catch (Exception InvalidDate) {
-				
-				System.out.println("You have entered an invalid date");
-				break;
-			}
-
-			LocalDate.parse(dateToCheck);
-			DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("MMddyyyy");
-			String formattedDate2 = dateToCheck.formatted(dateToCheck);
-
-			try {
-				if (foBusinessLogic.getOrder(dateToCheck, orderToCheck) == null) {
-					System.out.println("You have entered an invalid order number");
-
-				} else {
-
-					fileName = "Orders_" + dateToCheck + ".txt";
-					Order orderToRemove = foBusinessLogic.getOrder(fileName, orderToCheck);
-					foBusinessLogic.removeOrder(orderToRemove);
-					System.out.println("Order successfully removed.");
-				}
-			} catch (NoOrdersFoundException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+//			System.out.println("Enter order date (YYYY-MM-DD):");
+//			String dateToCheck = scanner.nextLine();
+//			System.out.println("Enter the order number that you want to remove:");
+//			int orderToCheck = scanner.nextInt();
+//
+//			try {
+//				foBusinessLogic.checkDate(dateToCheck);
+//			} catch (Exception InvalidDate) {
+//				
+//				System.out.println("You have entered an invalid date");
+//				break;
+//			}
+//
+//			LocalDate.parse(dateToCheck);
+//			DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("MMddyyyy");
+//			String formattedDate2 = dateToCheck.formatted(dateToCheck);
+//
+//			try {
+//				if (foBusinessLogic.getOrder(dateToCheck, orderToCheck) == null) {
+//					System.out.println("You have entered an invalid order number");
+//
+//				} else {
+//
+//					fileName = "Orders_" + dateToCheck + ".txt";
+//					Order orderToRemove = foBusinessLogic.getOrder(fileName, orderToCheck);
+//					foBusinessLogic.removeOrder(orderToRemove);
+//					System.out.println("Order successfully removed.");
+//				}
+//			} catch (NoOrdersFoundException e) {
+//				e.printStackTrace();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 
 			break;
 
 		// 5 - SAVE ORDER TO A FILE
 		case "5":
-
-			HashMap<LocalDate, Order> toBeSaved = foBusinessLogic.getUnsavedOrders();
-			foBusinessLogic.saveOrdersToAFile(toBeSaved);
-			System.out.println(toBeSaved.size());
-			System.out.println("Your data has been stored");
+			try {
+				foBusinessLogic.saveOrdersToAFile();
+				System.out.println("Your data has been stored");
+			} catch (NoOrdersFoundException ex) {
+				System.out.println("Operation failed. No data to export.\nReturning to menu.");
+			}
 			break;
 
 		// 6 - QUIT APPLICATION

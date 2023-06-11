@@ -16,7 +16,6 @@ public class Order {
 	private BigDecimal laborCost;
 	private BigDecimal tax;
 	private BigDecimal total;
-	private LocalDate orderDate;
 
 	public Order(int orderNumber, String customerName, String state, BigDecimal taxRate, String productType,
 			BigDecimal area, BigDecimal costPerSquareFoot, BigDecimal laborCostperSquareFoot, BigDecimal materialCost,
@@ -134,14 +133,9 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [orderNumber=" + orderNumber + ", customerName=" + customerName + ", state=" + state
-				+ ", taxRate=" + taxRate + ", productType=" + productType + ", area=" + area + ", costPerSquareFoot="
-				+ costPerSquareFoot + ", laborCostperSquareFoot=" + laborCostperSquareFoot + ", materialCost="
-				+ materialCost + ", laborCost=" + laborCost + ", tax=" + tax + ", total=" + total + "]";
+		return "Order [orderNumber = " + orderNumber + ", customerName = " + customerName + ", state = " + state
+				+ ", taxRate = " + taxRate + ", productType = " + productType + ", area = " + area + " sq feet, costPerSquareFoot = "
+				+ costPerSquareFoot + ", laborCostperSquareFoot = " + laborCostperSquareFoot + ", materialCost = "
+				+ materialCost + ", laborCost = " + laborCost + ", tax = " + tax + ", total = " + total + "]";
 	}
-
-	
-	public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
 }

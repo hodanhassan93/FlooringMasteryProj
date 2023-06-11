@@ -3,6 +3,7 @@ package com.fo.test;
 import com.fo.dto.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import com.fo.service.*;
 import com.fo.dataaccess.*;
@@ -39,7 +40,7 @@ class GetOrderTest {
 			LinkedList<Order> ordersList = dao.readObjects("Orders_06012013.txt");
 
 			for (Order order : ordersList) {
-				boolean result = (foBusinessLogicImpl.getOrder("Orders_06012013.txt", 1) != null);
+				boolean result = (foBusinessLogicImpl.getOrder(LocalDate.parse("2013-06-01"),1) != null);
 				assertTrue(result);
 			}
 		} catch (FileNotFoundException ex) {
@@ -56,7 +57,7 @@ class GetOrderTest {
 			LinkedList<Order> orders = dao.readObjects("Orders_06012013.txt");
 
 			for (Order order : orders) {
-				boolean result = (foBusinessLogicImpl.getOrder("Orders_06012013.txt", 99) == null);
+				boolean result = (foBusinessLogicImpl.getOrder(LocalDate.parse("2013-06-01"),99) == null);
 				assertTrue(result);
 			}
 		} catch (FileNotFoundException ex) {

@@ -43,7 +43,7 @@ class CheckProductTypeTest {
 		for (Product product : productsList) {
 
 			FoBusinessLogicImpl fobusinessLogicImpl = new FoBusinessLogicImpl();
-			boolean result = fobusinessLogicImpl.checkProductType("carpet");
+			boolean result = fobusinessLogicImpl.checkProductType("tile");
 			assertTrue(result);
 		}
 
