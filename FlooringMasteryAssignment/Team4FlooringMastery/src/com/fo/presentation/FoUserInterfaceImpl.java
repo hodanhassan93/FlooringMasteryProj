@@ -172,7 +172,6 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 			break;
 
-
 		// 3 - EDIT EXISTING ORDER
 		case "3":
 			String dateToEditString;
@@ -272,8 +271,9 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 				}
 			} while (test == false);
 
-			orderToEdit = foBusinessLogic.createOrder(orderToEdit.getOrderNumber(), LocalDate.parse(dateToEditString), orderToEdit.getCustomerName(),
-					orderToEdit.getState(), orderToEdit.getProductType(), orderToEdit.getArea());
+			orderToEdit = foBusinessLogic.createOrder(orderToEdit.getOrderNumber(), LocalDate.parse(dateToEditString),
+					orderToEdit.getCustomerName(), orderToEdit.getState(), orderToEdit.getProductType(),
+					orderToEdit.getArea());
 
 			System.out.println("\nHere is your order summary:");
 
@@ -304,39 +304,40 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 		// 4 - REMOVE ORDER
 		case "4":
-//			System.out.println("Enter order date (YYYY-MM-DD):");
-//			String dateToCheck = scanner.nextLine();
-//			System.out.println("Enter the order number that you want to remove:");
-//			int orderToCheck = scanner.nextInt();
-//
-//			try {
-//				foBusinessLogic.checkDate(dateToCheck);
-//			} catch (Exception InvalidDate) {
-//				
-//				System.out.println("You have entered an invalid date");
-//				break;
-//			}
-//
-//			LocalDate.parse(dateToCheck);
-//			DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("MMddyyyy");
-//			String formattedDate2 = dateToCheck.formatted(dateToCheck);
-//
-//			try {
-//				if (foBusinessLogic.getOrder(dateToCheck, orderToCheck) == null) {
-//					System.out.println("You have entered an invalid order number");
-//
-//				} else {
-//
-//					fileName = "Orders_" + dateToCheck + ".txt";
-//					Order orderToRemove = foBusinessLogic.getOrder(fileName, orderToCheck);
-//					foBusinessLogic.removeOrder(orderToRemove);
-//					System.out.println("Order successfully removed.");
-//				}
-//			} catch (NoOrdersFoundException e) {
-//				e.printStackTrace();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
+			System.out.println("Enter order date (YYYY-MM-DD):");
+			String dateToCheck = scanner.nextLine();
+			System.out.println("Enter the order number that you want to remove:");
+			int orderToCheck = scanner.nextInt();
+
+			try {
+				foBusinessLogic.checkDate(dateToCheck);
+			} catch (Exception InvalidDate) {
+
+				System.out.println("You have entered an invalid date");
+				break;
+			}
+
+			LocalDate localDate = LocalDate.parse(dateToCheck);
+			
+			DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("MMddyyyy");
+			String formattedDateToBeRemoved = localDate.format(dateTimeFormatter2);
+
+			try {
+				Order orderToRemove = foBusinessLogic.getOrder(localDate, orderToCheck);
+				if (orderToRemove == null) {
+					System.out.println("You have entered an invalid order number");
+
+				} else {
+
+					String fileName = "Orders_" + formattedDateToBeRemoved + ".txt";
+					foBusinessLogic.removeOrder(orderToRemove);
+					System.out.println("Order successfully removed.");
+				}
+			} catch (NoOrdersFoundException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			break;
 
