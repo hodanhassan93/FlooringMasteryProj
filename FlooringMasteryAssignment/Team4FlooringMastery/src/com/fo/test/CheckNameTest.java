@@ -15,7 +15,7 @@ class CheckNameTest {
 
 		boolean result = false;
 		try {
-			result = businessLogic.checkName("John, Doe");
+			result = businessLogic.checkName("John. Doe");
 		} catch (InvalidInputException e) {
 			fail();
 		}

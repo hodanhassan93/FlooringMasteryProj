@@ -1,2 +1,6 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-4,Catalina,CA,25.00,Tile,250,3.50,4.15,875.00,1037.50,478.1250,2390.63
+4,Cat,TX,4.45,Carpet,249,2.25,2.10,560.25,522.90,48.200175,1131.35
+5,Cat Test,TX,4.45,Tile,249,3.50,4.15,871.50,1033.35,84.765825,1989.62
+6,Catalina Test dates,CA,25.00,Tile,278,3.50,4.15,973.00,1153.70,531.6750,2658.38
+7,Catalina again,TX,4.45,Tile,344,3.50,4.15,1204.00,1427.60,117.106200,2748.71
+8,Cati,WA,9.25,Tile,347,3.50,4.15,1214.50,1440.05,245.545875,2900.10

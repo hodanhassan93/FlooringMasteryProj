@@ -36,19 +36,16 @@ class GetAllOrdersForDateTest {
 
 	@Test
 	void test() throws NoOrdersFoundException, IOException {
-
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-
-		LocalDate date = LocalDate.of(2013, 01, 06);
-		String formattedDate = date.format(dateTimeFormatter);
-		System.out.println(formattedDate);
-		FoOrderDataAccessImpl dao = new FoOrderDataAccessImpl();
 		FoBusinessLogicImpl fobusinessLogicImpl = new FoBusinessLogicImpl();
-		LinkedList<Order> result = fobusinessLogicImpl.getAllOrdersForDate(formattedDate);
+		LinkedList<Order> result = new LinkedList<Order>();
+		try {
+			result = fobusinessLogicImpl.getAllOrdersForDate(LocalDate.parse("2013-06-01"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (DateChangeException e) {
+			e.printStackTrace();
+		}
 		assertTrue(result.size() > 0);
 	}
 
-	static Stream<String> DateProvider() {
-		return Stream.of("Orders_06012013");
-	}
 }
