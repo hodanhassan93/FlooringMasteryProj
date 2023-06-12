@@ -12,6 +12,7 @@ import com.fo.dataaccess.*;
 import com.fo.dto.Order;
 import com.fo.dto.Product;
 import com.fo.dto.Tax;
+import com.fo.utility.DateChangeException;
 import com.fo.utility.EntryNotFoundException;
 import com.fo.dataaccess.FoDataAccess;
 import com.fo.dataaccess.FoOrderDataAccessImpl;
@@ -59,24 +60,55 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 		return orderDate;
 	}
 
-	private void setOrderDate(LocalDate date) {
+	public void setOrderDate(LocalDate date) {
 		orderDate = date;
 	}
 
+	public static LinkedList<Order> getOrders() {
+		return orders;
+	}
+
+	public static void setOrders(LinkedList<Order> orders) {
+		FoBusinessLogicImpl.orders = orders;
+	}
+
 	@Override
-	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException {
-		setOrderDate(date);
-		String fileName = "Orders_" + date.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
+	public LinkedList<Order> getAllOrdersForDate(LocalDate date) throws FileNotFoundException, DateChangeException {
+		if (this.orderDate == null) {
+			String fileName = "Orders_" + date.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
 
-		try {
-			this.orders = dataAccess.readObjects(fileName);
-			return this.orders;
-		} catch (FileNotFoundException ex) {
-			throw new FileNotFoundException("");
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			try {
+				this.orders = dataAccess.readObjects(fileName);
+				setOrderDate(date);
+				return this.orders;
+			} catch (FileNotFoundException ex) {
+				throw new FileNotFoundException("");
+			} catch (Exception ex) {
+			}
+
+			return null;
+		} else {
+			if (date.equals(this.orderDate))
+				return this.orders;
+			else
+				throw new DateChangeException("");
 		}
+	}
 
+	@Override
+	public LinkedList<Order> displayOrdersForDate(LocalDate date) throws FileNotFoundException {
+		if (date == this.orderDate)
+			return this.orders;
+		else {
+			String fileName = "Orders_" + date.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
+
+			try {
+				return dataAccess.readObjects(fileName);
+			} catch (FileNotFoundException ex) {
+				throw new FileNotFoundException("");
+			} catch (Exception ex) {
+			}
+		}
 		return null;
 	}
 
@@ -115,7 +147,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 			return false;
 		}
 
-		if (!name.matches("[a-zA-Z\\s,]+")) {
+		if (!name.matches("[a-zA-Z\\s]+")) {
 			throw new InvalidInputException("Invalid characters in name: " + name);
 		}
 		return true;
@@ -172,7 +204,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	}
 
 	@Override
-	public void placeOrder(Order order, LocalDate orderDate) {
+	public void placeOrder(Order order, LocalDate orderDate) throws DateChangeException {
 		FoTrackerDataAccess foTrackerDataAccess = new FoTrackerDataAccess();
 		if (orders != null) {
 			this.orders.add(order);
@@ -182,10 +214,12 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 				getAllOrdersForDate(orderDate);
 				this.orders.add(order);
 				currentHighestNumber = currentHighestNumber + 1;
+			} catch (DateChangeException e) {
+				throw new DateChangeException("");
 			} catch (FileNotFoundException ex) {
 				orders = new LinkedList<>();
-				this.orders.add(order);
 				setOrderDate(orderDate);
+				this.orders.add(order);
 				currentHighestNumber = currentHighestNumber + 1;
 			}
 		}
@@ -258,20 +292,18 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 
 	@Override
 	public LinkedList<Order> editOrder(int orderNumber, Order order) {
-
-		LinkedList<Order> newOrders = this.orders;
 		int index = 0;
 		for (Order anOrder : orders) {
 			if (anOrder.getOrderNumber() == orderNumber) {
-				index = newOrders.indexOf(anOrder);
+				index = orders.indexOf(anOrder);
 			}
 		}
-		newOrders.set(index, order);
-		return newOrders;
+		orders.set(index, order);
+		return orders;
 	}
 
 	@Override
-	public void removeOrder(Order order) throws NoOrdersFoundException {
+	public void removeOrder(Order order){
 		boolean status = false;
 
 		for (Order currentOrder : orders) {
@@ -279,9 +311,6 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 				status = orders.remove(currentOrder);
 				break;
 			}
-		}
-		if (!status) {
-			throw new NoOrdersFoundException("Order number " + order.getOrderNumber() + " not found.");
 		}
 	}
 

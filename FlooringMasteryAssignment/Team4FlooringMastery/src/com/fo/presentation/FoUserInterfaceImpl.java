@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import com.fo.utility.DateChangeException;
 import com.fo.utility.EntryNotFoundException;
 import com.fo.utility.InvalidDateException;
 import com.fo.utility.InvalidInputException;
@@ -45,9 +46,13 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			try {
 				foBusinessLogic.checkDate(dateString);
 				LocalDate date = LocalDate.parse(dateString);
-				System.out.println(foBusinessLogic.getAllOrdersForDate(date));
+
+				LinkedList<Order> displayOrders = foBusinessLogic.displayOrdersForDate(date);
+				for (Order anOrder : displayOrders)
+					System.out.println(anOrder);
+
 			} catch (InvalidDateException ex) {
-				System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.");
+				System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.\nReturning to menu.");
 			} catch (FileNotFoundException ex) {
 				System.out.println("No orders found for the given date.");
 			}
@@ -160,14 +165,36 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			System.out.println("Total Price: \t" + order.getTotal());
 			System.out.println("=============================");
 
-			System.out.println("\nPlace the order? (Y/N):");
+			System.out.println("\nSave the order? (Y/N):");
 			String placeOrderAnswer = scanner.nextLine();
 
 			if (placeOrderAnswer.equalsIgnoreCase("Y")) {
-				foBusinessLogic.placeOrder(order, setDate);
+				try {
+					foBusinessLogic.placeOrder(order, setDate);
+				} catch (DateChangeException e) {
+					System.out.println(
+							"Warning: proceeding with this operation will delete previous changes. Do you wish to save them? (Y/N)");
+					String savingAnswer = scanner.nextLine();
+
+					if (savingAnswer.equalsIgnoreCase("Y")) {
+						try {
+							foBusinessLogic.saveOrdersToAFile();
+							foBusinessLogic.setOrderDate(null);
+							foBusinessLogic.setOrders(null);
+						} catch (NoOrdersFoundException e1) {
+						}
+						System.out.println("Order data saved. Continuing add operation.");
+					} else {
+						System.out.println("Order data not saved. Continuing edit operation.");
+					}
+					try {
+						foBusinessLogic.placeOrder(order, setDate);
+					} catch (DateChangeException e1) {
+					}
+				}
 				System.out.println("Order data saved. Don't forget to export data before quitting.");
 			} else {
-				System.out.println("Order not placed. Returning to the main menu.");
+				System.out.println("Order not saved. Returning to the main menu.");
 			}
 
 			break;
@@ -193,11 +220,34 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			System.out.println("Enter the order number:");
 			String orderNumberToEdit = scanner.nextLine();
 
+//			==============================================================================================
 			Order orderToEdit;
 			try {
 				orderToEdit = foBusinessLogic.getOrder(LocalDate.parse(dateToEditString),
 						Integer.parseInt(orderNumberToEdit));
-				foBusinessLogic.getAllOrdersForDate(LocalDate.parse(dateToEditString));
+				try {
+					foBusinessLogic.getAllOrdersForDate(LocalDate.parse(dateToEditString));
+				} catch (DateChangeException e) {
+					System.out.println(
+							"Warning: proceeding with this operation will delete previous changes. Do you wish to save them? (Y/N)");
+					String savingAnswer = scanner.nextLine();
+
+					if (savingAnswer.equalsIgnoreCase("Y")) {
+						try {
+							foBusinessLogic.saveOrdersToAFile();
+							foBusinessLogic.setOrderDate(null);
+							foBusinessLogic.setOrders(null);
+						} catch (NoOrdersFoundException e1) {
+						}
+						System.out.println("Order data saved. Continuing edit operation.");
+					} else {
+						System.out.println("Order data not saved. Continuing edit operation.");
+					}
+					try {
+						foBusinessLogic.getAllOrdersForDate(LocalDate.parse(dateToEditString));
+					} catch (DateChangeException e1) {
+					}
+				}
 			} catch (FileNotFoundException e) {
 				System.out.println("No orders match date and order number. Returning to menu.");
 				break;
@@ -205,6 +255,7 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 				System.out.println("Order number does not exist. Returning to menu.");
 				break;
 			}
+//			=========================================================================================
 
 			if (orderToEdit == null) {
 				System.out.println("No orders match date and order number. Returning to menu.");
@@ -304,41 +355,106 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 
 		// 4 - REMOVE ORDER
 		case "4":
-			System.out.println("Enter order date (YYYY-MM-DD):");
-			String dateToCheck = scanner.nextLine();
-			System.out.println("Enter the order number that you want to remove:");
-			int orderToCheck = scanner.nextInt();
+			String dateToRemove;
+			test = false;
 
+			do {
+				System.out.println("Enter the order's date(YYYY-MM-DD):");
+				dateToRemove = scanner.nextLine();
+
+				try {
+					foBusinessLogic.checkDate(dateToRemove);
+					test = true;
+				} catch (InvalidDateException ex) {
+					System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.\n");
+					continue;
+				}
+			} while (test == false);
+
+			System.out.println("Enter the order number:");
+			String orderNumberToRemove = scanner.nextLine();
+
+//			==============================================================================================
+			Order orderToRemove;
 			try {
-				foBusinessLogic.checkDate(dateToCheck);
-			} catch (Exception InvalidDate) {
+				orderToRemove = foBusinessLogic.getOrder(LocalDate.parse(dateToRemove), Integer.parseInt(orderNumberToRemove));
+				try {
+					foBusinessLogic.getAllOrdersForDate(LocalDate.parse(dateToRemove));
+				} catch (DateChangeException e) {
+					System.out.println(
+							"Warning: proceeding with this operation will delete previous changes. Do you wish to save them? (Y/N)");
+					String savingAnswer = scanner.nextLine();
 
-				System.out.println("You have entered an invalid date");
+					if (savingAnswer.equalsIgnoreCase("Y")) {
+						try {
+							foBusinessLogic.saveOrdersToAFile();
+							foBusinessLogic.setOrderDate(null);
+							foBusinessLogic.setOrders(null);
+						} catch (NoOrdersFoundException e1) {
+						}
+						System.out.println("Order data saved. Continuing edit operation.");
+					} else {
+						System.out.println("Order data not saved. Continuing edit operation.");
+					}
+					try {
+						foBusinessLogic.getAllOrdersForDate(LocalDate.parse(dateToRemove));
+					} catch (DateChangeException e1) {
+					}
+				}
+				
+				System.out.println(orderToRemove);
+				System.out.println("\nRemove order? (Y/N):");
+				placeOrderAnswer = scanner.nextLine();
+				
+				if (placeOrderAnswer.equalsIgnoreCase("Y")) {
+					foBusinessLogic.removeOrder(orderToRemove);
+					System.out.println("Changes saved. Don't forget to export data before quitting.");
+				} else {
+					System.out.println("Changes were not saved. Returning to the main menu.");
+				}
+				
+			} catch (FileNotFoundException e) {
+				System.out.println("No orders match date and order number. Returning to menu.");
+				break;
+			} catch (NumberFormatException ex) {
+				System.out.println("Order number does not exist. Returning to menu.");
 				break;
 			}
+//			=========================================================================================
 
-			LocalDate localDate = LocalDate.parse(dateToCheck);
-			
-			DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("MMddyyyy");
-			String formattedDateToBeRemoved = localDate.format(dateTimeFormatter2);
-
-			try {
-				Order orderToRemove = foBusinessLogic.getOrder(localDate, orderToCheck);
-				if (orderToRemove == null) {
-					System.out.println("You have entered an invalid order number");
-
-				} else {
-
-					String fileName = "Orders_" + formattedDateToBeRemoved + ".txt";
-					foBusinessLogic.removeOrder(orderToRemove);
-					System.out.println("Order successfully removed.");
-				}
-			} catch (NoOrdersFoundException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+//			System.out.println("Enter order date (YYYY-MM-DD):");
+//			String dateToCheck = scanner.nextLine();
+//			System.out.println("Enter the order number that you want to remove:");
+//			int orderToCheck = scanner.nextInt();
+//
+//			try {
+//				foBusinessLogic.checkDate(dateToCheck);
+//			} catch (Exception InvalidDate) {
+//				
+//				System.out.println("You have entered an invalid date");
+//				break;
+//			}
+//
+//			LocalDate.parse(dateToCheck);
+//			DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("MMddyyyy");
+//			String formattedDate2 = dateToCheck.formatted(dateToCheck);
+//
+//			try {
+//				if (foBusinessLogic.getOrder(dateToCheck, orderToCheck) == null) {
+//					System.out.println("You have entered an invalid order number");
+//
+//				} else {
+//
+//					fileName = "Orders_" + dateToCheck + ".txt";
+//					Order orderToRemove = foBusinessLogic.getOrder(fileName, orderToCheck);
+//					foBusinessLogic.removeOrder(orderToRemove);
+//					System.out.println("Order successfully removed.");
+//				}
+//			} catch (NoOrdersFoundException e) {
+//				e.printStackTrace();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 			break;
 
 		// 5 - SAVE ORDER TO A FILE
@@ -346,6 +462,8 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 			try {
 				foBusinessLogic.saveOrdersToAFile();
 				System.out.println("Your data has been stored");
+				foBusinessLogic.setOrderDate(null);
+				foBusinessLogic.setOrders(null);
 			} catch (NoOrdersFoundException ex) {
 				System.out.println("Operation failed. No data to export.\nReturning to menu.");
 			}

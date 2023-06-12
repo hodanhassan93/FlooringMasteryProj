@@ -34,7 +34,7 @@ class CreateOrderTest {
 		
 		Product product = new Product("Carpet", new BigDecimal("2.25"), new BigDecimal("2.10"));
 		
-		Order testOrder = new Order(1, "Jack Brown", "TX", new BigDecimal("4.45"), "Carpet", new BigDecimal("150"), new BigDecimal("2.25"), new BigDecimal("2.10"),new BigDecimal("337.5"), new BigDecimal("315"), new BigDecimal("2903.62"), new BigDecimal("3556.12"));
+		Order testOrder = new Order(1, "Jack Brown", "TX", new BigDecimal("4.45"), "Carpet", new BigDecimal("150"), new BigDecimal("2.25"), new BigDecimal("2.10"),new BigDecimal("337.5"), new BigDecimal("315"), new BigDecimal("29.036250"), new BigDecimal("681.54"));
 		
 		System.out.println(testOrder);
 		System.out.println(order);
