@@ -455,7 +455,6 @@ public class FoUserInterfaceImpl implements FoUserInterface {
 //			} catch (Exception e) {
 //				e.printStackTrace();
 //			}
-
 			break;
 
 		// 5 - SAVE ORDER TO A FILE

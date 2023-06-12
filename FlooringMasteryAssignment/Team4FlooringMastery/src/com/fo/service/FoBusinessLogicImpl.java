@@ -305,6 +305,7 @@ public class FoBusinessLogicImpl implements FoBusinessLogic {
 	@Override
 	public void removeOrder(Order order){
 		boolean status = false;
+
 		for (Order currentOrder : orders) {
 			if (currentOrder.getOrderNumber() == order.getOrderNumber()) {
 				status = orders.remove(currentOrder);

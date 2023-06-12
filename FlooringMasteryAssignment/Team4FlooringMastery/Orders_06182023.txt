@@ -1,3 +1,2 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1,Ada Lovelace,CA,25.00,Tile,293,3.50,4.15,1025.50,1215.95,560.3625,2801.81
-
+6,Nocchi Rose,TX,4.45,Carpet,120,2.25,2.10,270.00,252.00,23.229000,545.23
